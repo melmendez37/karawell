@@ -1,0 +1,13 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#037368"
+  image: "assets/karawell-logo-white.png"
+  branding: "assets/karawell-branding-white.png"
+
+  android_12:
+    color: "#037368"
+    image: "assets/karawell-logo-white.png"
+    branding: "assets/karawell-branding-white.png"
