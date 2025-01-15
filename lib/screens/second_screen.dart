@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/third_screen.dart';
+import 'package:myapp/screens/fourth_screen.dart';
 
 class SecondScreen extends StatelessWidget {
   @override
@@ -117,7 +118,10 @@ class SecondScreen extends StatelessWidget {
 
                 ElevatedButton(
                     onPressed: () {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FourthScreen()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
