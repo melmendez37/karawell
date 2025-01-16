@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/fifth_screen.dart';
 
 class FourthScreen extends StatelessWidget {
   @override
@@ -129,7 +130,10 @@ class FourthScreen extends StatelessWidget {
 
             ElevatedButton(
                 onPressed: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FifthScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xff038C7F),
@@ -143,7 +147,7 @@ class FourthScreen extends StatelessWidget {
                 ),
 
                 child: Text(
-                  'Ask anything',
+                  'Your daily progress',
                   style: TextStyle(
                     fontFamily: 'DM_Sans',
                     fontSize: 18,
