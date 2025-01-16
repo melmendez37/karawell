@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/fifth_screen.dart';
 
 class FourthScreen extends StatelessWidget {
   @override
@@ -8,29 +9,52 @@ class FourthScreen extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 90,
         backgroundColor: Color(0xffffffff),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
-            Text(
-              'Hey, User',
-              style: TextStyle(
-              fontFamily: 'DM_Sans',
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Colors.black,
+                  size: 40,
+                ),
+
+                SizedBox(width: 10),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hey, User',
+                      style: TextStyle(
+                        fontFamily: 'DM_Sans',
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    Text(
+                      'Welcome to KaraWell',
+                      style: TextStyle(
+                        fontFamily: 'DM_Sans',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
 
-            Text(
-              'Welcome to KaraWell',
-              style: TextStyle(
-              fontFamily: 'DM_Sans',
-              fontSize: 16.0,
-              fontWeight: FontWeight.normal,
-              color: Colors.grey,
-              ),
-            ),
+            Icon(
+              Icons.menu,
+              color: Colors.black,
+            )
+
           ],
         ),
         centerTitle: false,
@@ -129,7 +153,10 @@ class FourthScreen extends StatelessWidget {
 
             ElevatedButton(
                 onPressed: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FifthScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xff038C7F),
@@ -143,7 +170,7 @@ class FourthScreen extends StatelessWidget {
                 ),
 
                 child: Text(
-                  'Ask anything',
+                  'Your daily progress',
                   style: TextStyle(
                     fontFamily: 'DM_Sans',
                     fontSize: 18,
