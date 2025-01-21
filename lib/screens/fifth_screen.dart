@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/sixth_screen.dart';
 
 class FifthScreen extends StatelessWidget {
   @override
@@ -328,9 +329,20 @@ class FifthScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+
               ],
             ),
-
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SixthScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                ),
+                child: Text('data'))
           ],
         ),
       ),
