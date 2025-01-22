@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/streaks_page.dart';
+import 'package:myapp/screens/chat_room.dart';
 
 class Homepage extends StatelessWidget {
   @override
@@ -200,7 +201,10 @@ class Homepage extends StatelessWidget {
 
             ElevatedButton(
                 onPressed: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatRoom()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xff027373),
