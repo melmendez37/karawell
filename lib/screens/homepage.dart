@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/fifth_screen.dart';
+import 'package:myapp/screens/streaks_page.dart';
 
-class FourthScreen extends StatelessWidget {
+class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,7 +209,7 @@ class FourthScreen extends StatelessWidget {
                         vertical: 15
                     ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)
+                        borderRadius: BorderRadius.circular(20)
                     )
                 ),
 
@@ -244,7 +244,7 @@ class FourthScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FifthScreen()),
+                    MaterialPageRoute(builder: (context) => StreaksPage()),
                   );
                 },
 
@@ -255,7 +255,7 @@ class FourthScreen extends StatelessWidget {
                         vertical: 15
                     ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)
+                        borderRadius: BorderRadius.circular(20)
                     )
                 ),
 
@@ -288,12 +288,135 @@ class FourthScreen extends StatelessWidget {
             SizedBox(height: 50),
 
             Text(
-              'Creative time',
+              'Activity log',
               style: TextStyle(
                   fontSize: 20,
                   fontFamily: 'DM_Sans',
                   fontWeight: FontWeight.bold,
                   color: Colors.black
+              ),
+            ),
+
+            SizedBox(height: 15),
+
+            ElevatedButton(
+              onPressed: (){},
+
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xffd9d9d9),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 15
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)
+                  )
+              ),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    'Conversations of the app',
+                    style: TextStyle(
+                      fontFamily: 'DM_Sans',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  SizedBox(width: 8),
+
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 25,
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: (){},
+
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xffd9d9d9),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 15
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)
+                  )
+              ),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    'Sample chat',
+                    style: TextStyle(
+                      fontFamily: 'DM_Sans',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  SizedBox(width: 8),
+
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 25,
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: (){},
+
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xffd9d9d9),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 15
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)
+                  )
+              ),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    'Progress today',
+                    style: TextStyle(
+                      fontFamily: 'DM_Sans',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  SizedBox(width: 8),
+
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 25,
+                  ),
+                ],
               ),
             ),
           ],

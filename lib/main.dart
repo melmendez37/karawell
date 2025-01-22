@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/second_screen.dart';
+import 'package:myapp/screens/login_screen.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -57,7 +57,7 @@ class Home extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SecondScreen()),
+                          MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
