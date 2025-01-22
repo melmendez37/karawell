@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/third_screen.dart';
+import 'package:myapp/screens/register_screen.dart';
+import 'package:myapp/screens/homepage.dart';
 
-class SecondScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -117,7 +118,10 @@ class SecondScreen extends StatelessWidget {
 
                 ElevatedButton(
                     onPressed: () {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterScreen()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -169,7 +173,7 @@ class SecondScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ThirdScreen()),
+                        MaterialPageRoute(builder: (context) => Homepage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

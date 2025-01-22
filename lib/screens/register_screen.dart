@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/third_screen.dart';
 
-class ThirdScreen extends StatelessWidget {
+
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -179,10 +179,7 @@ class ThirdScreen extends StatelessWidget {
 
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ThirdScreen()),
-                      );
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
