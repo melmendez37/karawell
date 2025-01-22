@@ -140,7 +140,7 @@ class RegisterScreen extends StatelessWidget {
 
                 ElevatedButton(
                     onPressed: () {
-
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -149,7 +149,7 @@ class RegisterScreen extends StatelessWidget {
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)
+                            borderRadius: BorderRadius.circular(20)
                         )
                     ),
 
@@ -164,7 +164,7 @@ class RegisterScreen extends StatelessWidget {
                     )
                 ),
 
-                SizedBox(height:30),
+                SizedBox(height:50),
 
                 Text(
                   'Already have an account?',
@@ -188,7 +188,7 @@ class RegisterScreen extends StatelessWidget {
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)
+                            borderRadius: BorderRadius.circular(20)
                         )
                     ),
 

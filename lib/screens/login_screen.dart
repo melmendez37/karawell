@@ -120,7 +120,7 @@ class LoginScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RegisterScreen()),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -130,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)
+                            borderRadius: BorderRadius.circular(20)
                         )
                     ),
 
@@ -173,7 +173,7 @@ class LoginScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
+                        MaterialPageRoute(builder: (context) => RegisterScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -183,7 +183,7 @@ class LoginScreen extends StatelessWidget {
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)
+                            borderRadius: BorderRadius.circular(20)
                         )
                     ),
 
