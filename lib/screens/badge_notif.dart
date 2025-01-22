@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SixthScreen extends StatelessWidget {
+class BadgeNotif extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(

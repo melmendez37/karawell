@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/sixth_screen.dart';
+import 'package:myapp/screens/badge_notif.dart';
 
-class FifthScreen extends StatelessWidget {
+class StreaksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -336,7 +336,7 @@ class FifthScreen extends StatelessWidget {
                 onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SixthScreen()),
+                    MaterialPageRoute(builder: (context) => BadgeNotif()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
