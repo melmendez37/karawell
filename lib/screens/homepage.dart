@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/streaks_page.dart';
 import 'package:myapp/screens/chat_room.dart';
 
@@ -304,7 +305,12 @@ class Homepage extends StatelessWidget {
             SizedBox(height: 15),
 
             ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JournalingPage()),
+                );
+              },
 
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xffd9d9d9),
@@ -345,8 +351,12 @@ class Homepage extends StatelessWidget {
             SizedBox(height: 20),
 
             ElevatedButton(
-              onPressed: (){},
-
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JournalingPage()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xffd9d9d9),
                   padding: EdgeInsets.symmetric(
@@ -386,7 +396,12 @@ class Homepage extends StatelessWidget {
             SizedBox(height: 20),
 
             ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JournalingPage()),
+                );
+              },
 
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xffd9d9d9),

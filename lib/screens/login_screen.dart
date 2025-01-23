@@ -102,6 +102,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(height:40),
 
                 Text(
@@ -146,6 +147,7 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height:30),
+
                 Text(
                   'You can also log in using:',
                   style: TextStyle(
@@ -167,6 +169,7 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.white
                   ),
                 ),
+
                 SizedBox(height: 10),
 
                 ElevatedButton(
