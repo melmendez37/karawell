@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/journaling_page.dart';
+import 'package:myapp/screens/my_profile.dart';
 import 'package:myapp/screens/streaks_page.dart';
 import 'package:myapp/screens/chat_room.dart';
 
@@ -509,7 +510,12 @@ class Homepage extends StatelessWidget {
                     fontSize: 18.0
                   ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyProfile()),
+                );
+              },
             ),
 
             SizedBox(height: 10),
