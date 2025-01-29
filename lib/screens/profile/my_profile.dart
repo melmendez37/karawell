@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/profile/change_password.dart';
+import 'package:myapp/screens/profile/edit_profile.dart';
+
 
 class MyProfile extends StatelessWidget {
   @override
@@ -62,25 +65,7 @@ class MyProfile extends StatelessWidget {
                         Image(
                           image: AssetImage('assets/karawell-name-light.png'),
                         ),
-                        ElevatedButton(
-                            onPressed: (){
 
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff027373),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                )
-                            ),
-                            child: Text(
-                              'Edit profile',
-                              style: TextStyle(
-                                  fontFamily: 'DM_Sans',
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFF2F2F2)
-                              ),
-                            )
-                        )
                       ],
                     ),
                   ),
@@ -173,6 +158,60 @@ class MyProfile extends StatelessWidget {
                             SizedBox.fromSize(),
                           ],
                         ),
+
+                        SizedBox(height: 30),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => EditProfile()),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xff027373),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                ),
+                                child: Text(
+                                  'Edit profile',
+                                  style: TextStyle(
+                                      fontFamily: 'DM_Sans',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFF2F2F2)
+                                  ),
+                                )
+                            ),
+
+                            ElevatedButton(
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ChangePassword()),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xff3d3d3d),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                ),
+                                child: Text(
+                                  'Change password',
+                                  style: TextStyle(
+                                      fontFamily: 'DM_Sans',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFF2F2F2)
+                                  ),
+                                )
+                            ),
+                          ],
+                        )
+
                       ],
                     )
                   ),

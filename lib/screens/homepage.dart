@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/journaling_page.dart';
-import 'package:myapp/screens/my_profile.dart';
+import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/streaks_page.dart';
 import 'package:myapp/screens/chat_room.dart';
 
@@ -472,7 +473,12 @@ class Homepage extends StatelessWidget {
                     fontSize: 18.0
                 ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JournalingPage()),
+                );
+              },
             ),
 
             SizedBox(height: 10),
@@ -491,7 +497,12 @@ class Homepage extends StatelessWidget {
                     fontSize: 18.0
                 ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StreaksPage()),
+                );
+              },
             ),
 
             SizedBox(height: 10),
@@ -535,7 +546,12 @@ class Homepage extends StatelessWidget {
                     fontSize: 18.0
                 ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
             ),
           ],
         ),
