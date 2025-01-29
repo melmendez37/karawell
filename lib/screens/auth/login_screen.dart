@@ -1,12 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/auth/register_screen.dart';
-import 'package:myapp/screens/homepage.dart';
+import 'package:myapp/screens/auth/auth_service.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginScreen> {
+  //get auth service
+  final authService  = AuthService();
+
+  //text controllers
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  //when login button is pressed
+  void login() async {
+    //prepare data
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    //attempt logging in,
+    try{
+      await authService.signInWithEmailPassword(email, password);
+
+    }
+
+    //catch errors
+    catch (e) {
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: $e"))
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
+    return Scaffold(
+      body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -38,9 +74,11 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 40),
 
                 TextFormField(
+                  controller: _emailController,
+
                   decoration: const InputDecoration(
-                    labelText: 'Username',
-                    hintText: 'Username',
+                    labelText: 'Email address',
+                    hintText: 'Enter email address',
 
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -48,7 +86,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -57,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     labelStyle: TextStyle(
@@ -72,6 +110,8 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 30),
 
                 TextFormField(
+                  controller: _passwordController,
+
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     hintText: 'Password',
@@ -82,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -91,7 +131,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     labelStyle: TextStyle(
@@ -118,12 +158,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 20),
 
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
-                      );
-                    },
+                    onPressed: login,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(

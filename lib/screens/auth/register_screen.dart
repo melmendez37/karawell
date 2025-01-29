@@ -1,11 +1,64 @@
 import 'package:flutter/material.dart';
 
+import 'auth_service.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget{
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
+    //get auth service
+    final authService  = AuthService();
+
+    //text controllers
+    final _emailController = TextEditingController();
+    final _passwordController = TextEditingController();
+    final _confirmPassController = TextEditingController();
+
+    //when sign up button is pressed
+    void signUp() async {
+      //prepare data
+      final email = _emailController.text;
+      final password = _passwordController.text;
+      final confirmPass = _confirmPassController.text;
+
+      //check if passwords match
+      if(password != confirmPass){
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Passwords don't match")
+            )
+        );
+        return;
+      }
+
+      //try signing up
+      try{
+        await authService.signUpWithEmailPassword(email, password);
+
+        //remove register page
+        Navigator.pop(context);
+      }
+
+      //catch any error
+      catch (e) {
+        if (mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text('Error: $e')
+              )
+          );
+        }
+      }
+    }
+
+    return Scaffold(
+      body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -37,9 +90,10 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 40),
 
                 TextFormField(
+                  controller: _emailController,
                   decoration: const InputDecoration(
-                    labelText: 'Username',
-                    hintText: 'Username',
+                    labelText: 'Email address',
+                    hintText: 'Enter email address',
 
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -47,7 +101,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -56,7 +110,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     labelStyle: TextStyle(
@@ -71,6 +125,7 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 30),
 
                 TextFormField(
+                  controller: _passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     hintText: 'Password',
@@ -81,7 +136,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -90,7 +145,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     labelStyle: TextStyle(
@@ -105,6 +160,7 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 30),
 
                 TextFormField(
+                  controller: _confirmPassController,
                   decoration: const InputDecoration(
                     labelText: 'Confirm password',
                     hintText: 'Confirm password',
@@ -115,7 +171,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -124,7 +180,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide(
                           color: Colors.white,
-                          width: 2.0,
+                          width: 1.0,
                         )
                     ),
                     labelStyle: TextStyle(
@@ -139,9 +195,7 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height:40),
 
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: signUp,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(

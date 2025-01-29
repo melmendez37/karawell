@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/auth/auth_service.dart';
 import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/streaks_page.dart';
 import 'package:myapp/screens/chat_room.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget{
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+
+  //get auth service
+  final authService = AuthService();
+
+  //when logout button is pressed
+  void logout() async {
+    await authService.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -546,12 +563,7 @@ class Homepage extends StatelessWidget {
                     fontSize: 18.0
                 ),
               ),
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
+              onTap: logout,
             ),
           ],
         ),

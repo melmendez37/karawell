@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/auth/auth_service.dart';
 import 'package:myapp/screens/profile/change_password.dart';
 import 'package:myapp/screens/profile/edit_profile.dart';
 
+class MyProfile extends StatefulWidget{
+  const MyProfile({super.key});
 
-class MyProfile extends StatelessWidget {
+  @override
+  State<MyProfile> createState() => _MyProfileState();
+}
+
+class _MyProfileState extends State<MyProfile> {
+  //get auth service
+  final authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
+
+    final currentEmail = authService.getCurrentUserEmail();
+
     return Scaffold(
       backgroundColor: Color(0xFFF2F2F2),
       appBar: AppBar(
@@ -138,6 +151,7 @@ class MyProfile extends StatelessWidget {
                               ),
                             ),
 
+                            //where the phone number should be
                             SizedBox.fromSize(),
                           ],
                         ),
@@ -145,6 +159,7 @@ class MyProfile extends StatelessWidget {
                         SizedBox(height: 30),
 
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Email address:',
@@ -155,7 +170,14 @@ class MyProfile extends StatelessWidget {
                               ),
                             ),
 
-                            SizedBox.fromSize(),
+                            //where the user's email should be
+                            Text(
+                                currentEmail.toString(),
+                                style: TextStyle(
+                                    fontFamily: 'DM_Sans',
+                                    fontSize: 14
+                                ),
+                            ),
                           ],
                         ),
 
