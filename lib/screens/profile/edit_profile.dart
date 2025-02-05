@@ -1,9 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/profile/my_profile.dart';
+import 'package:myapp/screens/auth/auth_service.dart';
+import 'package:myapp/screens/profile/profile.dart';
+import 'package:myapp/screens/profile/profile_database.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget{
+  const EditProfile({super.key});
+
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  //profile db
+  final profileDatabase = ProfileDatabase();
+  final authService = AuthService();
+  final supabase = Supabase.instance.client;
+
+  //controllers
+  final _usernameController = TextEditingController();
+  final _taglineController = TextEditingController();
+  final _mobileNumberController = TextEditingController();
+  final _emailController = TextEditingController();
+
+  //user updates
+  void changeProfile (Profile profile) async {
+    Profile updatedProfile = Profile(
+      id: profile.id,
+      username: _usernameController.text,
+      tagline: _taglineController.text,
+      phone: _mobileNumberController.text,
+      avatar_url: profile.avatar_url,
+    );
+
+    try {
+      //update user profile in DB
+      await profileDatabase.updateProfile(profile, updatedProfile);
+
+      //update phone number and email
+      await supabase.auth.updateUser(
+        UserAttributes(
+          email: _emailController.text,
+        ),
+      );
+
+      // Clear the fields after update
+      _usernameController.clear();
+      _taglineController.clear();
+
+      // Navigate back if needed
+      Navigator.pop(context);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error updating profile: $error")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currentEmail = authService.getCurrentUserEmail();
+    final user = supabase.auth.currentUser!;
+
     return Scaffold(
         backgroundColor: Color(0xFFF2F2F2),
         appBar: AppBar(
@@ -29,269 +87,204 @@ class EditProfile extends StatelessWidget {
           ),
         ),
 
-      body: Padding(
-          padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Last name',
-                hintText: 'Enter last name',
-                filled: true,
-                fillColor: Colors.white,
+      body: StreamBuilder(
+          stream: profileDatabase.stream,
+          builder: (context, snapshot){
+            if(!snapshot.hasData){
+              return const Center(child: CircularProgressIndicator(),);
+            }
 
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(0xFFCBD5E1),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                      width: 1.0,
-                    )
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'DM_Sans',
-                ),
-                hintStyle: TextStyle(
-                  color: Color(0xFF606060),
-                  fontFamily: 'DM_Sans',
-                ),
-              ),
-            ),
+            final profile = snapshot.data!.first;
 
-            SizedBox(height: 20),
+            return Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                      hintText: 'Enter new username',
+                      filled: true,
+                      fillColor: Colors.white,
 
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'First name',
-                hintText: 'Enter first name',
-                filled: true,
-                fillColor: Colors.white,
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(0xFFCBD5E1),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                      width: 1.0,
-                    )
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'DM_Sans',
-                ),
-                hintStyle: TextStyle(
-                  color: Color(0xFF606060),
-                  fontFamily: 'DM_Sans',
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Middle name',
-                hintText: 'Enter middle name',
-                filled: true,
-                fillColor: Colors.white,
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(0xFFCBD5E1),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                      width: 1.0,
-                    )
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'DM_Sans',
-                ),
-                hintStyle: TextStyle(
-                  color: Color(0xFF606060),
-                  fontFamily: 'DM_Sans',
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Tagline',
-                hintText: 'What is your life motto?',
-                filled: true,
-                fillColor: Colors.white,
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(0xFFCBD5E1),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                      width: 1.0,
-                    )
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'DM_Sans',
-                ),
-                hintStyle: TextStyle(
-                  color: Color(0xFF606060),
-                  fontFamily: 'DM_Sans',
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Mobile number',
-                hintText: 'Enter mobile number',
-                filled: true,
-                fillColor: Colors.white,
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(0xFFCBD5E1),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                      width: 1.0,
-                    )
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'DM_Sans',
-                ),
-                hintStyle: TextStyle(
-                  color: Color(0xFF606060),
-                  fontFamily: 'DM_Sans',
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Email address',
-                hintText: 'Enter email address',
-                filled: true,
-                fillColor: Colors.white,
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(0xFFCBD5E1),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                      width: 1.0,
-                    )
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'DM_Sans',
-                ),
-                hintStyle: TextStyle(
-                  color: Color(0xFF606060),
-                  fontFamily: 'DM_Sans',
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox.fromSize(),
-
-                ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyProfile()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff027373),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        )
-                    ),
-                    child: Text(
-                      'Save changes',
-                      style: TextStyle(
-                          fontFamily: 'DM_Sans',
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFF2F2F2)
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6)
+                        ),
+                        borderSide: BorderSide(
+                          color: Color(0xFFCBD5E1),
+                          width: 1.0,
+                        ),
                       ),
-                    )
-                )
-              ],
-            )
-          ],
-        ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6)
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xFFCBD5E1),
+                            width: 1.0,
+                          )
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'DM_Sans',
+                      ),
+                      hintStyle: TextStyle(
+                        color: Color(0xFF606060),
+                        fontFamily: 'DM_Sans',
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  TextFormField(
+                    controller: _taglineController,
+                    decoration: const InputDecoration(
+                      labelText: 'Tagline',
+                      hintText: 'What is your life motto?',
+                      filled: true,
+                      fillColor: Colors.white,
+
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6)
+                        ),
+                        borderSide: BorderSide(
+                          color: Color(0xFFCBD5E1),
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6)
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xFFCBD5E1),
+                            width: 1.0,
+                          )
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'DM_Sans',
+                      ),
+                      hintStyle: TextStyle(
+                        color: Color(0xFF606060),
+                        fontFamily: 'DM_Sans',
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  TextFormField(
+                    controller: _mobileNumberController,
+                    maxLength: 13,
+                    decoration: const InputDecoration(
+                      labelText: 'Mobile number',
+                      prefixText: '+63',
+                      filled: true,
+                      fillColor: Colors.white,
+
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6)
+                        ),
+                        borderSide: BorderSide(
+                          color: Color(0xFFCBD5E1),
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6)
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xFFCBD5E1),
+                            width: 1.0,
+                          )
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'DM_Sans',
+                      ),
+                      hintStyle: TextStyle(
+                        color: Color(0xFF606060),
+                        fontFamily: 'DM_Sans',
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'New email address',
+                      hintText: currentEmail.toString(),
+                      filled: true,
+                      fillColor: Colors.white,
+
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6)
+                        ),
+                        borderSide: BorderSide(
+                          color: Color(0xFFCBD5E1),
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6)
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xFFCBD5E1),
+                            width: 1.0,
+                          )
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'DM_Sans',
+                      ),
+                      hintStyle: TextStyle(
+                        color: Color(0xFF606060),
+                        fontFamily: 'DM_Sans',
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox.fromSize(),
+
+                      ElevatedButton(
+                          onPressed: () => changeProfile(profile),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff027373),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )
+                          ),
+                          child: Text(
+                            'Save changes',
+                            style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF2F2F2)
+                            ),
+                          )
+                      )
+                    ],
+                  )
+                ],
+              ),
+            );
+          }
       )
 
     );

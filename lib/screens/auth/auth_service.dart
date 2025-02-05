@@ -15,10 +15,21 @@ class AuthService {
   // Sign up
   Future<AuthResponse> signUpWithEmailPassword(
       String email, String password) async {
-    return await _supabaseClient.auth.signUp(
+    final response = await _supabaseClient.auth.signUp(
       email: email,
       password: password,
     );
+
+    final userId = response.user?.id;
+
+    await _supabaseClient.from('profile').insert({
+      'id': userId,
+      'username': null,
+      'tagline': null,
+      'avatar_url': null,
+    });
+
+    return response;
   }
   //Sign out
   Future<void> signOut() async {
