@@ -3,6 +3,7 @@ import 'package:myapp/screens/auth/auth_service.dart';
 import 'package:myapp/screens/profile/change_password.dart';
 import 'package:myapp/screens/profile/edit_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
+import 'package:myapp/screens/profile/profile_picture.dart';
 
 class MyProfile extends StatefulWidget{
   const MyProfile({super.key});
@@ -93,7 +94,16 @@ class _MyProfileState extends State<MyProfile> {
                           Image(
                             image: AssetImage('assets/karawell-name-light.png'),
                           ),
-
+                          IconButton(
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ProfilePicture()),
+                                );
+                              },
+                              icon: Icon(Icons.edit),
+                              color: Colors.white,
+                          ),
                         ],
                       ),
                     ),

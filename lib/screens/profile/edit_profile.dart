@@ -12,6 +12,8 @@ class EditProfile extends StatefulWidget{
 }
 
 class _EditProfileState extends State<EditProfile> {
+  //work on keeping old values if some fields are not edited
+
   //profile db
   final profileDatabase = ProfileDatabase();
   final authService = AuthService();
@@ -21,7 +23,6 @@ class _EditProfileState extends State<EditProfile> {
   final _usernameController = TextEditingController();
   final _taglineController = TextEditingController();
   final _mobileNumberController = TextEditingController();
-  final _emailController = TextEditingController();
 
   //user updates
   void changeProfile (Profile profile) async {
@@ -37,13 +38,6 @@ class _EditProfileState extends State<EditProfile> {
       //update user profile in DB
       await profileDatabase.updateProfile(profile, updatedProfile);
 
-      //update phone number and email
-      await supabase.auth.updateUser(
-        UserAttributes(
-          email: _emailController.text,
-        ),
-      );
-
       // Clear the fields after update
       _usernameController.clear();
       _taglineController.clear();
@@ -55,6 +49,23 @@ class _EditProfileState extends State<EditProfile> {
         SnackBar(content: Text("Error updating profile: $error")),
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getInitialProfile();
+  }
+
+  Future<void> _getInitialProfile() async {
+    final id = supabase.auth.currentUser!.id;
+    final data = await supabase.from('profile').select().eq('id', id).single();
+
+    setState(() {
+      _usernameController.text = data['username'];
+      _taglineController.text = data['tagline'];
+      _mobileNumberController.text = data['phone'];
+    });
   }
 
   @override
@@ -184,45 +195,6 @@ class _EditProfileState extends State<EditProfile> {
                     decoration: const InputDecoration(
                       labelText: 'Mobile number',
                       prefixText: '+63',
-                      filled: true,
-                      fillColor: Colors.white,
-
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
-                        ),
-                        borderSide: BorderSide(
-                          color: Color(0xFFCBD5E1),
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(6)
-                          ),
-                          borderSide: BorderSide(
-                            color: Color(0xFFCBD5E1),
-                            width: 1.0,
-                          )
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'DM_Sans',
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF606060),
-                        fontFamily: 'DM_Sans',
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'New email address',
-                      hintText: currentEmail.toString(),
                       filled: true,
                       fillColor: Colors.white,
 
