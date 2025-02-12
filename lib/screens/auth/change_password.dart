@@ -1,7 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChangePassword extends StatelessWidget {
+import 'package:myapp/screens/auth/login_screen.dart';
+
+class ChangePassword extends StatefulWidget {
+  final String token;
+
+  const ChangePassword({required this.token, Key? key}) : super(key: key);
+
+  @override
+  _ChangePasswordState createState() => _ChangePasswordState();
+
+}
+
+class _ChangePasswordState extends State<ChangePassword> {
+  final _passwordController = TextEditingController();
+
+Future<void> resetPassword() async {
+  try {
+    final response = await Supabase.instance.client.auth.updateUser(
+        UserAttributes(password: _passwordController.text)
+    );
+
+    if(response == null){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Password updated successfully!")),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to update password.")),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error: ${e.toString()}")),
+    );
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

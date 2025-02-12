@@ -42,4 +42,12 @@ class AuthService {
     final user = session?.user;
     return user?.email;
   }
+
+  //reset password
+  Future<void> resetPassword(String email) async{
+    await _supabaseClient.auth.resetPasswordForEmail(
+        email,
+        redirectTo: 'http://example.com/account/update-password'
+    );
+  }
 }

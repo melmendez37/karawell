@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
-import 'package:myapp/screens/profile/change_password.dart';
+import 'package:myapp/screens/auth/change_password.dart';
 import 'package:myapp/screens/profile/edit_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
 import 'package:myapp/screens/profile/profile_picture.dart';
@@ -98,7 +98,7 @@ class _MyProfileState extends State<MyProfile> {
                               onPressed: (){
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ProfilePicture()),
+                                  MaterialPageRoute(builder: (context) => EditProfile()),
                                 );
                               },
                               icon: Icon(Icons.edit),
@@ -245,7 +245,7 @@ class _MyProfileState extends State<MyProfile> {
                                     onPressed: (){
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => ChangePassword()),
+                                        MaterialPageRoute(builder: (context) => ProfilePicture()),
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -255,7 +255,7 @@ class _MyProfileState extends State<MyProfile> {
                                         )
                                     ),
                                     child: Text(
-                                      'Change password',
+                                      'Upload photo',
                                       style: TextStyle(
                                           fontFamily: 'DM_Sans',
                                           fontWeight: FontWeight.bold,
@@ -269,67 +269,6 @@ class _MyProfileState extends State<MyProfile> {
                           ],
                         )
                     ),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 10,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Integrated with:',
-                            style: TextStyle(
-                                fontFamily: 'DM_Sans',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16
-                            ),
-                          ),
-
-                          SizedBox(height: 20),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Image(
-                                image: AssetImage('assets/fb-frame.png'),
-                              ),
-
-                              Text(
-                                "Not connected",
-                                style: TextStyle(
-                                  fontFamily: 'DM_Sans',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF606060),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          SizedBox(height: 15),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Image(
-                                image: AssetImage('assets/google-frame.png'),
-                              ),
-
-                              Text(
-                                "Not connected",
-                                style: TextStyle(
-                                  fontFamily: 'DM_Sans',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF606060),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

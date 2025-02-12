@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/auth/register_screen.dart';
-import 'package:myapp/screens/auth/auth_service.dart';
-import 'package:myapp/screens/auth/reset_password.dart';
+import 'package:myapp/screens/auth/change_password.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ResetPassword extends StatefulWidget{
+  const ResetPassword({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginPageState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _LoginPageState extends State<LoginScreen> {
-  //get auth service
-  final authService  = AuthService();
-
-  //text controllers
+class _ResetPasswordState extends State<ResetPassword>{
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
 
-  //when login button is pressed
-  void login() async {
-    //prepare data
-    final email = _emailController.text;
-    final password = _passwordController.text;
+  @override
+  void dispose(){
+    _emailController.dispose();
+    super.dispose();
+  }
 
-    //attempt logging in,
+  Future passwordReset() async {
+    final email = _emailController.text.trim();
+
     try{
-      await authService.signInWithEmailPassword(email, password);
-
-    }
-
-    //catch errors
-    catch (e) {
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: $e"))
-        );
-      }
+      await Supabase.instance.client.auth.resetPasswordForEmail(
+        email,
+        redirectTo: "io.karawell.app://reset-password",
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Password reset email sent! Check your mail."),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text("Error: ${e.toString()}"),
+        ),
+      );
     }
   }
 
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginScreen> {
 
               children: [
                 Text(
-                  'Login',
+                  'Reset Password',
                   style: TextStyle(
                       fontSize: 30,
                       fontFamily: 'DM_Sans',
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginScreen> {
                 TextFormField(
                   controller: _emailController,
                   style: TextStyle(
-                    color: Colors.white,
+                      color: Colors.white
                   ),
                   textCapitalization: TextCapitalization.none,
                   decoration: const InputDecoration(
@@ -113,71 +113,16 @@ class _LoginPageState extends State<LoginScreen> {
 
                 SizedBox(height: 30),
 
-                TextFormField(
-                  controller: _passwordController,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Password',
-
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(20)
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 1.0,
-                        )
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(20)
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 1.0,
-                        )
-                    ),
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  obscureText: true,
-                ),
-
-                SizedBox(height:20),
-
-                TextButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ResetPassword()),
-                      );
-                    },
-                    child: Text(
-                      'Forgot password?',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'DM_Sans',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                      ),
-                    ),
-                ),
-
-                SizedBox(height: 20),
 
                 ElevatedButton(
-                    onPressed: login,
+                  onPressed: passwordReset,
+                    // onPressed: (){
+                    //   Navigator.push(context,  MaterialPageRoute(builder: (context) => ChangePassword()));
+                    // },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 130,
+                            horizontal: 70,
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
@@ -186,7 +131,7 @@ class _LoginPageState extends State<LoginScreen> {
                     ),
 
                     child: Text(
-                      'Log In',
+                      'Send confirmation',
                       style: TextStyle(
                         fontFamily: 'DM_Sans',
                         fontSize: 18,
@@ -198,16 +143,15 @@ class _LoginPageState extends State<LoginScreen> {
 
                 SizedBox(height:30),
 
-                TextButton(
+
+                ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterScreen()),
-                      );
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         padding: EdgeInsets.symmetric(
+                            horizontal: 120,
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
@@ -216,10 +160,10 @@ class _LoginPageState extends State<LoginScreen> {
                     ),
 
                     child: Text(
-                      'No account yet? Sign Up',
+                      'Back',
                       style: TextStyle(
                         fontFamily: 'DM_Sans',
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -232,8 +176,5 @@ class _LoginPageState extends State<LoginScreen> {
         ),
       ),
     );
-  }
 }
-
-
-
+}

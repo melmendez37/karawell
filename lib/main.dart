@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:myapp/screens/auth/auth_gate.dart';
+import 'package:myapp/screens/auth/change_password.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

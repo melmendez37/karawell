@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/badge_notif.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 
 class StreaksPage extends StatelessWidget {
   @override
@@ -30,321 +31,67 @@ class StreaksPage extends StatelessWidget {
       ),
 
       body: Padding(
-        padding: EdgeInsets.all(35.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        padding: EdgeInsets.all(20.0),
+         child: Column(
+           children: [
+             TableCalendar(
+                  locale: 'en_US',
+                 focusedDay: DateTime.now(),
+                 headerStyle: HeaderStyle(
+                     formatButtonVisible: false,
+                     titleCentered: true,
+                     titleTextStyle: TextStyle(
+                       fontWeight: FontWeight.bold,
+                       fontSize: 18,
+                       fontFamily: 'DM_Sans'
+                    )
+                 ),
+                 firstDay: DateTime.utc(2025, 2, 1),
+                 lastDay: DateTime(2030, 2, 1),
+                rowHeight: 70,
+               calendarBuilders: CalendarBuilders(
+                 defaultBuilder: (context, date, focusedDay){
+                   bool isCurrentMonth = date.month == focusedDay.month;
 
-          children: [
-            Container(
-              padding: EdgeInsets.all(100.0),
-              decoration: BoxDecoration(
-                color: Color(0xFF038C7F),
-                borderRadius: BorderRadius.circular(100),
-              ),
-            ),
-
-            SizedBox(height: 50),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 30.0
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              Icons.money,
-                              color: Color(0xFFE8AE00),
-                              size:24
-                          ),
-                          Text(
-                            '20K',
-                            style: TextStyle(
-                              fontFamily: 'DM_Sans',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                   return Container(
+                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                     decoration: BoxDecoration(
+                       color: isCurrentMonth ? Colors.white : Colors.grey[200],
+                     ),
+                     alignment: Alignment.center,
+                     child: Text(
+                       date.day.toString(),
+                       style: TextStyle(
+                       fontSize: 18,
+                       fontFamily: "DM_Sans",
+                       color: Colors.black, // Black font color
+                       ),
+                     ),
+                   );
+                 },
+                 todayBuilder: (context, date, focusedDay){
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF038C7F),
                     ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                      'Day 1',
+                    alignment: Alignment.center,
+                    child: Text(
+                      date.day.toString(),
                       style: TextStyle(
-                        fontFamily: 'DM_Sans',
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
+                        fontFamily: "DM_Sans",
+                        color: Colors.white, // White text for contrast
                       ),
                     ),
-                  ],
-                ),
-
-                SizedBox(width: 10.0),
-
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 30.0
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              Icons.money,
-                              color: Color(0xFFE8AE00),
-                              size:24
-                          ),
-                          Text(
-                            '20K',
-                            style: TextStyle(
-                              fontFamily: 'DM_Sans',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                      'Day 2',
-                      style: TextStyle(
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(width: 10.0),
-
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 25.0
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              Icons.bakery_dining_sharp,
-                              color: Color(0xFFFF3D00),
-                              size:24
-                          ),
-                          Text(
-                            'Badge',
-                            style: TextStyle(
-                              fontFamily: 'DM_Sans',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                      'Day 3',
-                      style: TextStyle(
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-
-            SizedBox(height: 20.0),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 30.0
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.money,
-                            color: Color(0xFFE8AE00),
-                            size:24
-                          ),
-                          Text(
-                            '20K',
-                            style: TextStyle(
-                              fontFamily: 'DM_Sans',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                        'Day 4',
-                      style: TextStyle(
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(width: 10.0),
-
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 30.0
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              Icons.money,
-                              color: Color(0xFFE8AE00),
-                              size:24
-                          ),
-                          Text(
-                            '20K',
-                            style: TextStyle(
-                              fontFamily: 'DM_Sans',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                      'Day 5',
-                      style: TextStyle(
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(width: 10.0),
-
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 30.0
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              Icons.money,
-                              color: Color(0xFFE8AE00),
-                              size:24
-                          ),
-                          Text(
-                            '20K',
-                            style: TextStyle(
-                              fontFamily: 'DM_Sans',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                      'Day 6',
-                      style: TextStyle(
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
-                ),
-
-              ],
-            ),
-            ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BadgeNotif()),
                   );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                ),
-                child: Text('data'))
-          ],
-        ),
+                 }
+               ),
+             ),
+
+           ],
+         )
       ),
     );
   }

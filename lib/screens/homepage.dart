@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
+import 'package:myapp/screens/badges_page.dart';
 import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
@@ -68,7 +70,7 @@ class _HomepageState extends State<Homepage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hey, ${profile.username}",
+                            "Hey, ${profile.username ?? "No username yet."}",
                             style: TextStyle(
                               fontFamily: 'DM_Sans',
                               fontSize: 20.0,
@@ -513,11 +515,11 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   DrawerHeader(
                     child: Text(
-                      'Welcome, ${profile.username}',
+                      'Welcome, ${profile.username ?? "No username yet."}' ,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
-                          fontSize: 24.0
+                          fontSize: 22.0
                       ),
                     ),
 
@@ -564,6 +566,30 @@ class _HomepageState extends State<Homepage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => StreaksPage()),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 10),
+
+                  ListTile(
+                    leading: Icon(
+                      Icons.star,
+                      color: Colors.black,
+                      size: 30.0,
+                    ),
+                    title: const Text(
+                      'Badges',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DM_Sans',
+                          fontSize: 18.0
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BadgesPage()),
                       );
                     },
                   ),

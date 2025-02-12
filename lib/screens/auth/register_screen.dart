@@ -91,6 +91,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 TextFormField(
                   controller: _emailController,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Email address',
                     hintText: 'Enter email address',
@@ -126,6 +129,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 TextFormField(
                   controller: _passwordController,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     hintText: 'Password',
@@ -155,12 +161,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       color: Colors.grey,
                     ),
                   ),
+                  obscureText: true,
                 ),
 
                 SizedBox(height: 30),
 
                 TextFormField(
                   controller: _confirmPassController,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Confirm password',
                     hintText: 'Confirm password',
@@ -190,6 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       color: Colors.grey,
                     ),
                   ),
+                  obscureText: true,
                 ),
 
                 SizedBox(height:40),
@@ -218,43 +229,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     )
                 ),
 
-                SizedBox(height:50),
+                SizedBox(height:30),
 
-                Text(
-                  'Already have an account?',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'DM_Sans',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                ElevatedButton(
+                TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 120,
                             vertical: 10
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
                         )
                     ),
-
                     child: Text(
-                      'Log In',
+                      'Already have an account? Log In',
                       style: TextStyle(
                         fontFamily: 'DM_Sans',
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     )
+
+
 
 
                 )
