@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileDatabase{
   //Database -> profile
-  final database = Supabase.instance.client.from('profile');
+  final database = Supabase.instance.client.from('profiles');
 
   //Create
   Future createProfile(Profile newProfile) async{
@@ -11,7 +11,7 @@ class ProfileDatabase{
   }
 
   //Read
-  final stream = Supabase.instance.client.from('profile').stream(
+  final stream = Supabase.instance.client.from('profiles').stream(
       primaryKey: ['id']
   ).eq('id', Supabase.instance.client.auth.currentUser?.id as Object).map((data) => data.map((profileMap) => Profile.fromMap(profileMap)).toList());
 

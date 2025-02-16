@@ -31,7 +31,6 @@ class _EditProfileState extends State<EditProfile> {
       username: _usernameController.text,
       tagline: _taglineController.text,
       phone: _mobileNumberController.text,
-      avatar_url: profile.avatar_url,
     );
 
     try {

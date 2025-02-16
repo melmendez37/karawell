@@ -22,11 +22,10 @@ class AuthService {
 
     final userId = response.user?.id;
 
-    await _supabaseClient.from('profile').insert({
+    await _supabaseClient.from('profiles').insert({
       'id': userId,
       'username': null,
       'tagline': null,
-      'avatar_url': null,
     });
 
     return response;
