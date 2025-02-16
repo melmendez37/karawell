@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
-import 'package:myapp/screens/badges_page.dart';
+import 'package:myapp/screens/badges/badges_page.dart';
 import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
-import 'package:myapp/screens/streaks_page.dart';
+import 'package:myapp/screens/streaks/streaks_database.dart';
+import 'package:myapp/screens/streaks/streaks_page.dart';
 import 'package:myapp/screens/chat_room.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,15 +23,61 @@ class _HomepageState extends State<Homepage> {
   //get auth service
   final authService = AuthService();
 
-  //
+  //init supabase
   final supabase = Supabase.instance.client;
 
   //
   final profileDatabase = ProfileDatabase();
+  final streakDatabase = StreaksDatabase();
 
   //when logout button is pressed
   void logout() async {
     await authService.signOut();
+  }
+
+  Future<void> updateUserStreaks() async {
+    final userId = supabase.auth.currentUser?.id;
+    if(userId == null) return;
+
+
+    final response = await supabase.from('user_streaks')
+      .select()
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    DateTime today = DateTime.now();
+    int counter = 1;
+
+    if(response != null) {
+      DateTime lastOpened = DateTime.parse(response['last_opened']);
+      int days = today.difference(lastOpened).inDays;
+
+      if(days > 1){
+        //Reset the count
+        counter = 1;
+      } else {
+        //add one to count
+        counter = response['counter'] + 1;
+      }
+
+      //Update database
+      await supabase.from('user_streaks').update({
+        'last_opened': today.toIso8601String(),
+        'counter': counter
+      }).eq('user_id', userId);
+    } else {
+      //Insert new record if this is not found
+      await supabase.from('user_streaks').insert({
+        'user_id': userId,
+        'last_opened': today.toIso8601String(),
+        'counter': counter,
+      });
+    }
+  }
+
+  void initState(){
+    super.initState();
+    updateUserStreaks();
   }
 
   @override
@@ -114,7 +161,7 @@ class _HomepageState extends State<Homepage> {
       ),
 
       body: StreamBuilder(
-          stream: profileDatabase.stream,
+          stream: streakDatabase.stream,
           builder: (context, snapshot){
 
             if(!snapshot.hasData){
@@ -123,7 +170,7 @@ class _HomepageState extends State<Homepage> {
               );
             }
 
-            final profile = snapshot.data!.first;
+            final streaks = snapshot.data!.first;
 
             return Padding(
               padding: EdgeInsets.all(35.0),
@@ -159,10 +206,10 @@ class _HomepageState extends State<Homepage> {
                           child: Column(
                             children: [
                               Text(
-                                '---',
+                                "${streaks.counter}",
                                 style: TextStyle(
                                   fontFamily: 'DM_Sans',
-                                  fontSize: 30,
+                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

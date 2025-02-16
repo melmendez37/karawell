@@ -28,6 +28,12 @@ class AuthService {
       'tagline': null,
     });
 
+    await _supabaseClient.from('user_streaks').insert({
+      'id': userId,
+      'last_opened': DateTime.now().toIso8601String(),
+      'counter': 1,
+    });
+
     return response;
   }
   //Sign out

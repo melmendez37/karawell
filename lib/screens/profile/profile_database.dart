@@ -10,7 +10,7 @@ class ProfileDatabase{
     await database.insert(newProfile.toMap());
   }
 
-  //Read
+  //Read profiles
   final stream = Supabase.instance.client.from('profiles').stream(
       primaryKey: ['id']
   ).eq('id', Supabase.instance.client.auth.currentUser?.id as Object).map((data) => data.map((profileMap) => Profile.fromMap(profileMap)).toList());
