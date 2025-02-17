@@ -3,10 +3,14 @@ import 'dart:ffi';
 class Streaks{
   final String id;
   final int counter;
+  final int longestStreak;
+  final DateTime lastActiveDate;
 
   Streaks({
     required this.id,
     required this.counter,
+    required this.longestStreak,
+    required this.lastActiveDate,
   });
 
   //map -> profile
@@ -14,6 +18,8 @@ class Streaks{
     return Streaks(
       id: map['id'] as String,
       counter: map['counter'] as int,
+      longestStreak: map['longest_streak'] as int,
+      lastActiveDate: DateTime.parse(map['last_active_date']),
     );
   }
 
@@ -22,6 +28,8 @@ class Streaks{
     return {
       'id' : id,
       'counter': counter,
+      'longest_streak': longestStreak,
+      'last_active_date': lastActiveDate.toIso8601String(),
     };
   }
 }

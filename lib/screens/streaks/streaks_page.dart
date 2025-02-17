@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+class StreaksPage extends StatefulWidget {
+  const StreaksPage({super.key});
 
-class StreaksPage extends StatelessWidget {
+  @override
+  State<StreaksPage> createState() => _StreaksPageState();
+}
+
+class _StreaksPageState extends State<StreaksPage> {
+  final streaksDatabase = StreaksDatabase();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,69 +39,87 @@ class StreaksPage extends StatelessWidget {
         ),
       ),
 
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-         child: Column(
-           children: [
-             TableCalendar(
-                  locale: 'en_US',
-                 focusedDay: DateTime.now(),
-                 headerStyle: HeaderStyle(
-                     formatButtonVisible: false,
-                     titleCentered: true,
-                     titleTextStyle: TextStyle(
-                       fontWeight: FontWeight.bold,
-                       fontSize: 18,
-                       fontFamily: 'DM_Sans'
-                    )
-                 ),
-                 firstDay: DateTime.utc(2025, 2, 1),
-                 lastDay: DateTime(2030, 2, 1),
-                rowHeight: 70,
-               calendarBuilders: CalendarBuilders(
-                 defaultBuilder: (context, date, focusedDay){
-                   bool isCurrentMonth = date.month == focusedDay.month;
+      body: StreamBuilder(
+          stream: streaksDatabase.stream,
+          builder: (context, snapshot){
+            if(!snapshot.hasData){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-                   return Container(
-                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                     decoration: BoxDecoration(
-                       color: isCurrentMonth ? Colors.white : Colors.grey[200],
-                     ),
-                     alignment: Alignment.center,
-                     child: Text(
-                       date.day.toString(),
-                       style: TextStyle(
-                       fontSize: 18,
-                       fontFamily: "DM_Sans",
-                       color: Colors.black, // Black font color
-                       ),
-                     ),
-                   );
-                 },
-                 todayBuilder: (context, date, focusedDay){
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF038C7F),
+            final streaks = snapshot.data!.first;
+
+            return Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "${streaks.counter}"
                     ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      date.day.toString(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                        color: Colors.white, // White text for contrast
+                    TableCalendar(
+                      locale: 'en_US',
+                      focusedDay: DateTime.now(),
+                      headerStyle: HeaderStyle(
+                          formatButtonVisible: false,
+                          titleCentered: true,
+                          titleTextStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              fontFamily: 'DM_Sans'
+                          )
+                      ),
+                      firstDay: DateTime.utc(2025, 2, 1),
+                      lastDay: DateTime(2030, 2, 1),
+                      rowHeight: 70,
+                      calendarBuilders: CalendarBuilders(
+                          defaultBuilder: (context, date, focusedDay){
+                            bool isCurrentMonth = date.month == focusedDay.month;
+
+                            return Container(
+                              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                              decoration: BoxDecoration(
+                                color: isCurrentMonth ? Colors.white : Colors.grey[200],
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                date.day.toString(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "DM_Sans",
+                                  color: Colors.black, // Black font color
+                                ),
+                              ),
+                            );
+                          },
+                          todayBuilder: (context, date, focusedDay){
+                            return Container(
+                              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF038C7F),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                date.day.toString(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "DM_Sans",
+                                  color: Colors.white, // White text for contrast
+                                ),
+                              ),
+                            );
+                          }
                       ),
                     ),
-                  );
-                 }
-               ),
-             ),
 
-           ],
-         )
-      ),
+                  ],
+                ),
+            );
+          }
+      )
+
+
     );
   }
 }

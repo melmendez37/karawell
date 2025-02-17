@@ -35,49 +35,17 @@ class _HomepageState extends State<Homepage> {
     await authService.signOut();
   }
 
-  Future<void> updateUserStreaks() async {
-    final userId = supabase.auth.currentUser?.id;
-    if(userId == null) return;
-
-
-    final response = await supabase.from('user_streaks')
-      .select()
-      .eq('user_id', userId)
-      .maybeSingle();
-
-    DateTime today = DateTime.now();
-    int counter = 1;
-
-    if(response != null) {
-      DateTime lastOpened = DateTime.parse(response['last_opened']);
-      int days = today.difference(lastOpened).inDays;
-
-      if(days > 1){
-        //Reset the count
-        counter = 1;
-      } else {
-        //add one to count
-        counter = response['counter'] + 1;
-      }
-
-      //Update database
-      await supabase.from('user_streaks').update({
-        'last_opened': today.toIso8601String(),
-        'counter': counter
-      }).eq('user_id', userId);
-    } else {
-      //Insert new record if this is not found
-      await supabase.from('user_streaks').insert({
-        'user_id': userId,
-        'last_opened': today.toIso8601String(),
-        'counter': counter,
-      });
-    }
-  }
-
+  @override
   void initState(){
     super.initState();
-    updateUserStreaks();
+    _updateUserStreaks();
+  }
+
+  void _updateUserStreaks() async {
+    final userId = supabase.auth.currentUser?.id;
+    if(userId != null){
+      await StreaksDatabase().updateUserStreaks(userId);
+    }
   }
 
   @override
