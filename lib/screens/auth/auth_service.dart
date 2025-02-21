@@ -22,17 +22,32 @@ class AuthService {
 
     final userId = response.user?.id;
 
+    //Insert blank profile
     await _supabaseClient.from('profiles').insert({
       'id': userId,
       'username': null,
       'tagline': null,
     });
 
+    //User streak
     await _supabaseClient.from('user_streaks').insert({
       'id': userId,
       'last_opened': DateTime.now().toIso8601String(),
       'counter': 1,
     });
+
+    //Generate user badges
+    final badges = await _supabaseClient.from('badges').select('id');
+    if(badges.isNotEmpty){
+      final userBadges = badges.map((badge) => {
+        'user_id': userId,
+        'badge_id': badge['badge_id'],
+        'is_unlocked': false
+      }).toList();
+
+      //insert into user badges table
+      await _supabaseClient.from('user_badges').insert(badges);
+    }
 
     return response;
   }

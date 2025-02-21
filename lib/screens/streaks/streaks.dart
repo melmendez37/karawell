@@ -17,9 +17,11 @@ class Streaks{
   factory Streaks.fromMap(Map<String, dynamic> map){
     return Streaks(
       id: map['id'] as String,
-      counter: map['counter'] as int,
-      longestStreak: map['longest_streak'] as int,
-      lastActiveDate: DateTime.parse(map['last_active_date']),
+      counter: map['counter'] != null ? map['counter'] as int : 0,
+      longestStreak: map['longest_streak'] != null ? map['longest_streak'] as int : 0,
+      lastActiveDate: map['last_active_date'] != null
+          ? DateTime.parse(map['last_active_date'] as String)
+          : DateTime.now(), // Use current date if lastActiveDate is null
     );
   }
 

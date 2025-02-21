@@ -35,17 +35,17 @@ class _HomepageState extends State<Homepage> {
     await authService.signOut();
   }
 
+  void _updateUserStreaks() async {
+    final userId = supabase.auth.currentUser?.id;
+    if(userId != null){
+      await streakDatabase.updateUserStreaks(userId);
+    }
+  }
+
   @override
   void initState(){
     super.initState();
     _updateUserStreaks();
-  }
-
-  void _updateUserStreaks() async {
-    final userId = supabase.auth.currentUser?.id;
-    if(userId != null){
-      await StreaksDatabase().updateUserStreaks(userId);
-    }
   }
 
   @override
@@ -147,109 +147,215 @@ class _HomepageState extends State<Homepage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
 
                 children: [
-                  Text(
-                    'Progress Tracker',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-
-                  Row(
+                  Column(
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical:20
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "${streaks.counter}",
-                                style: TextStyle(
-                                  fontFamily: 'DM_Sans',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.accessibility,
-                                    color: Colors.black,
-                                    size: 20,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'Daily Streaks',
-                                    style: TextStyle(
-                                      fontFamily: 'DM_Sans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              )
-
-                            ],
-                          ),
+                      Text(
+                        'Progress Tracker',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'DM_Sans',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black
                         ),
                       ),
 
-                      SizedBox(width: 10),
+                      SizedBox(height: 10),
 
-
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 20
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                '---',
-                                style: TextStyle(
-                                  fontFamily: 'DM_Sans',
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              child: Column(
                                 children: [
-                                  Icon(
-                                    Icons.bakery_dining_sharp,
-                                    color: Colors.black,
-                                    size: 20,
-                                  ),
-                                  SizedBox(width: 5),
                                   Text(
-                                    'Badges',
+                                    "${streaks.counter}",
                                     style: TextStyle(
                                       fontFamily: 'DM_Sans',
-                                      fontSize: 16,
+                                      fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.accessibility,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Daily Streaks',
+                                        style: TextStyle(
+                                          fontFamily: 'DM_Sans',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
+
+                          SizedBox(width: 16),
+
+
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '---',
+                                    style: TextStyle(
+                                      fontFamily: 'DM_Sans',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.bakery_dining_sharp,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Badges',
+                                        style: TextStyle(
+                                          fontFamily: 'DM_Sans',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 50),
+
+                  Column(
+                    children: [
+                      Text(
+                        'What do you want to do today?',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'DM_Sans',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black
+                        ),
+                      ),
+
+                      SizedBox(height: 15),
+
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChatRoom()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff027373),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50,
+                                vertical: 15
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            )
+                        ),
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Icon(
+                              Icons.chat_outlined,
+                              color: Color(0xFFF2F2F2),
+                              size: 25,
+                            ),
+
+                            SizedBox(width: 8),
+
+                            Text(
+                              'Start new conversation',
+                              style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xfff2f2f2),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 20),
+
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => StreaksPage()),
+                          );
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff038C7F),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50,
+                                vertical: 15
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            )
+                        ),
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Icon(
+                              Icons.accessibility,
+                              color: Color(0xFFF2F2F2),
+                              size: 25,
+                            ),
+
+                            SizedBox(width: 8),
+
+                            Text(
+                              'Check your progress',
+                              style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xfff2f2f2),
+                              ),
+
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -257,256 +363,156 @@ class _HomepageState extends State<Homepage> {
 
                   SizedBox(height: 50),
 
-                  Text(
-                    'What do you want to do today?',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black
-                    ),
-                  ),
-
-                  SizedBox(height: 15),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChatRoom()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff027373),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 50,
-                            vertical: 15
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        )
-                    ),
-
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Icon(
-                          Icons.chat_outlined,
-                          color: Color(0xFFF2F2F2),
-                          size: 25,
-                        ),
-
-                        SizedBox(width: 8),
-
-                        Text(
-                          'Start new conversation',
-                          style: TextStyle(
+                  Column(
+                    children: [
+                      Text(
+                        'Activity log',
+                        style: TextStyle(
+                            fontSize: 20,
                             fontFamily: 'DM_Sans',
-                            fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xfff2f2f2),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StreaksPage()),
-                      );
-                    },
-
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff038C7F),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 50,
-                            vertical: 15
+                            color: Colors.black
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        )
-                    ),
+                      ),
 
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Icon(
-                          Icons.accessibility,
-                          color: Color(0xFFF2F2F2),
-                          size: 25,
+                      SizedBox(height: 15),
+
+                      ElevatedButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => JournalingPage()),
+                          );
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xffd9d9d9),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            )
                         ),
 
-                        SizedBox(width: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Conversations of the app',
+                              style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
 
-                        Text(
-                          'Check your progress',
-                          style: TextStyle(
-                            fontFamily: 'DM_Sans',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xfff2f2f2),
-                          ),
+                            SizedBox(width: 8),
 
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black,
+                              size: 25,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
 
-                  SizedBox(height: 50),
+                      SizedBox(height: 20),
 
-                  Text(
-                    'Activity log',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'DM_Sans',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black
-                    ),
-                  ),
-
-                  SizedBox(height: 15),
-
-                  ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => JournalingPage()),
-                      );
-                    },
-
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffd9d9d9),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 15
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        )
-                    ),
-
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Conversations of the app',
-                          style: TextStyle(
-                            fontFamily: 'DM_Sans',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                      ElevatedButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => JournalingPage()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xffd9d9d9),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            )
                         ),
 
-                        SizedBox(width: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Sample chat',
+                              style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
 
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.black,
-                          size: 25,
+                            SizedBox(width: 8),
+
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black,
+                              size: 25,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
 
-                  SizedBox(height: 20),
+                      SizedBox(height: 20),
 
-                  ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => JournalingPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffd9d9d9),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 15
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        )
-                    ),
+                      ElevatedButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => JournalingPage()),
+                          );
+                        },
 
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Sample chat',
-                          style: TextStyle(
-                            fontFamily: 'DM_Sans',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-
-                        SizedBox(width: 8),
-
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => JournalingPage()),
-                      );
-                    },
-
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffd9d9d9),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 15
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        )
-                    ),
-
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Progress today',
-                          style: TextStyle(
-                            fontFamily: 'DM_Sans',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xffd9d9d9),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            )
                         ),
 
-                        SizedBox(width: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Progress today',
+                              style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
 
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.black,
-                          size: 25,
+                            SizedBox(width: 8),
+
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black,
+                              size: 25,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             );

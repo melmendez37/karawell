@@ -19,13 +19,95 @@ class _StreaksPageState extends State<StreaksPage> {
       appBar: AppBar(
         toolbarHeight: 90,
         backgroundColor: Color(0xffffffff),
-        title: Text(
-          'Daily Streaks',
-          style: TextStyle(
-            fontFamily: 'DM_Sans',
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
+        title: StreamBuilder(
+            stream: streaksDatabase.stream,
+            builder: (context, snapshot){
+              if(!snapshot.hasData){
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final streaks = snapshot.data!.first;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Streaks',
+                    style: TextStyle(
+                      fontFamily: 'DM_Sans',
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.local_fire_department_rounded,
+                                  color: Colors.black,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  '${streaks.counter}',
+                                  style: TextStyle(
+                                    fontFamily: 'DM_Sans',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )
+
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.emoji_events,
+                                  color: Colors.black,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  ' ${streaks.longestStreak}',
+                                  style: TextStyle(
+                                    fontFamily: 'DM_Sans',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )
+
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              );
+            }
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -54,64 +136,59 @@ class _StreaksPageState extends State<StreaksPage> {
                 padding: EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    Text(
-                      "${streaks.counter}"
-                    ),
-                    TableCalendar(
-                      locale: 'en_US',
-                      focusedDay: DateTime.now(),
-                      headerStyle: HeaderStyle(
-                          formatButtonVisible: false,
-                          titleCentered: true,
-                          titleTextStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              fontFamily: 'DM_Sans'
-                          )
-                      ),
-                      firstDay: DateTime.utc(2025, 2, 1),
-                      lastDay: DateTime(2030, 2, 1),
-                      rowHeight: 70,
-                      calendarBuilders: CalendarBuilders(
-                          defaultBuilder: (context, date, focusedDay){
-                            bool isCurrentMonth = date.month == focusedDay.month;
+                    Expanded(
+                        child: GridView.count(
+                          mainAxisSpacing: 20.0,
+                          crossAxisSpacing: 25,
+                          crossAxisCount: 3,
+                          children: List.generate(21, (index) {
+                            bool isActive = index < streaks.counter;
+                            bool isMedal = index == 0 || index == 2 || index == 6 || index == 13 || index == 20;
 
-                            return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                              decoration: BoxDecoration(
-                                color: isCurrentMonth ? Colors.white : Colors.grey[200],
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                date.day.toString(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "DM_Sans",
-                                  color: Colors.black, // Black font color
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 25
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isActive ? Colors.green : Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                          isMedal ? Icons.emoji_flags : Icons.sunny,
+                                          size: 35,
+                                          color: isActive ? Colors.white : Colors.grey,
+                                      ),
+                                      SizedBox(height: 5,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Day ${index + 1}',
+                                            style: TextStyle(
+                                              fontFamily: 'DM_Sans',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: isActive ? Colors.white : Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             );
-                          },
-                          todayBuilder: (context, date, focusedDay){
-                            return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                              decoration: BoxDecoration(
-                                color: Color(0xFF038C7F),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                date.day.toString(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "DM_Sans",
-                                  color: Colors.white, // White text for contrast
-                                ),
-                              ),
-                            );
-                          }
-                      ),
-                    ),
+                          }),
+                        ),
+                    )
 
                   ],
                 ),
