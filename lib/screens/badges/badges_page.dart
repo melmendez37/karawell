@@ -81,33 +81,46 @@ class _BadgesPageState extends State<BadgesPage> {
                         final badge = badgeSnapshot.data!;
                         final isUnlocked = userBadge.isUnlocked;
 
-                        return ListTile(
-                          leading: ColorFiltered(
-                              colorFilter: isUnlocked ? ColorFilter.mode(Colors.transparent, BlendMode.multiply)
-                                  : ColorFilter.mode(Colors.grey, BlendMode.saturation),
-                            child: Image.network(
-                                badge.imageUrl,
-                                width: 50,
-                                height: 50,
-                            ),
-                          ),
-                          title: Text(
-                              badge.name,
-                              style: TextStyle(
-                                  fontFamily: 'DM_Sans',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold
+                        return Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: isUnlocked ? Colors.transparent : Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                leading: ColorFiltered(
+                                  colorFilter: isUnlocked ? ColorFilter.mode(Colors.transparent, BlendMode.color)
+                                      : ColorFilter.mode(Colors.white, BlendMode.color),
+                                  child: Image.network(
+                                    badge.imageUrl,
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                                title: Text(
+                                  badge.name,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'DM_Sans',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                  ),
+
+                                ),
+                                subtitle: Text(
+                                  isUnlocked ? "Unlocked" : "Locked",
+                                  style: TextStyle(
+                                      fontFamily: 'DM_Sans',
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic
+                                  ),
+                                ),
+                                tileColor: isUnlocked ? Colors.transparent : Colors.white,
                               ),
 
-                          ),
-                          subtitle: Text(
-                              isUnlocked ? "Unlocked" : "Locked",
-                              style: TextStyle(
-                                fontFamily: 'DM_Sans',
-                                fontSize: 16,
-                                fontStyle: FontStyle.italic
-                              ),
-                          ),
+                            )
+
                         );
                       }
                   );

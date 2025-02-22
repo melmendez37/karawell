@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
+import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/badges/badges_page.dart';
 import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
@@ -9,6 +10,7 @@ import 'package:myapp/screens/profile/profile_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/streaks/streaks_page.dart';
 import 'package:myapp/screens/chat_room.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 
@@ -29,6 +31,7 @@ class _HomepageState extends State<Homepage> {
   //
   final profileDatabase = ProfileDatabase();
   final streakDatabase = StreaksDatabase();
+  final badgesDatabase = BadgesDatabase();
 
   //when logout button is pressed
   void logout() async {
@@ -129,7 +132,10 @@ class _HomepageState extends State<Homepage> {
       ),
 
       body: StreamBuilder(
-          stream: streakDatabase.stream,
+          stream: CombineLatestStream.combine2(
+              streakDatabase.stream,
+              badgesDatabase.userBadgeStream,
+              (streaks, badges) => {'streaks': streaks, 'badges': badges}),
           builder: (context, snapshot){
 
             if(!snapshot.hasData){
@@ -138,7 +144,11 @@ class _HomepageState extends State<Homepage> {
               );
             }
 
-            final streaks = snapshot.data!.first;
+            var data = snapshot.data as Map<String, dynamic>;
+            var streaks = data['streaks'] as List;
+            var badge = (data['badges'] as List).where((badge) => badge.isUnlocked == true).length;
+
+            var firstStreak = streaks.isNotEmpty ? streaks.first : null;
 
             return Padding(
               padding: EdgeInsets.all(35.0),
@@ -173,7 +183,7 @@ class _HomepageState extends State<Homepage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    "${streaks.counter}",
+                                    "${firstStreak.counter}",
                                     style: TextStyle(
                                       fontFamily: 'DM_Sans',
                                       fontSize: 24,
@@ -218,7 +228,7 @@ class _HomepageState extends State<Homepage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    '---',
+                                    "${badge}",
                                     style: TextStyle(
                                       fontFamily: 'DM_Sans',
                                       fontSize: 24,

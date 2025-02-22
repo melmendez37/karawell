@@ -64,6 +64,8 @@ class StreaksDatabase {
         'longest_streak': counter
       });
     }
+
+    //await updateBadgeStatus(counter, userId);
   }
 
   // void chatroomOpened(String userId) async {
