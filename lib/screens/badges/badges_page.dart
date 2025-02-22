@@ -60,6 +60,8 @@ class _BadgesPageState extends State<BadgesPage> {
                itemBuilder: (context, index){
                   final userBadge = badges[index];
 
+
+
                   return FutureBuilder<Badges?>(
                       future: badgesDatabase.fetchBadge(userBadge.badgeId),
                       builder: (context, badgeSnapshot){
@@ -72,7 +74,7 @@ class _BadgesPageState extends State<BadgesPage> {
 
                         if(badgeSnapshot.hasError || badgeSnapshot.data == null){
                           return ListTile(
-                            title: Text('no badge here.'),
+                            title: Text('no badge BRUH.'),
                           );
                         }
 
@@ -89,8 +91,23 @@ class _BadgesPageState extends State<BadgesPage> {
                                 height: 50,
                             ),
                           ),
-                          title: Text(badge.name),
-                          subtitle: Text(isUnlocked ? "Unlocked" : "Locked"),
+                          title: Text(
+                              badge.name,
+                              style: TextStyle(
+                                  fontFamily: 'DM_Sans',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold
+                              ),
+
+                          ),
+                          subtitle: Text(
+                              isUnlocked ? "Unlocked" : "Locked",
+                              style: TextStyle(
+                                fontFamily: 'DM_Sans',
+                                fontSize: 16,
+                                fontStyle: FontStyle.italic
+                              ),
+                          ),
                         );
                       }
                   );

@@ -38,15 +38,17 @@ class AuthService {
 
     //Generate user badges
     final badges = await _supabaseClient.from('badges').select('id');
+    print("Fetched Badges: $badges");
+
     if(badges.isNotEmpty){
       final userBadges = badges.map((badge) => {
         'user_id': userId,
-        'badge_id': badge['badge_id'],
+        'badge_id': badge['id'],
         'is_unlocked': false
       }).toList();
 
       //insert into user badges table
-      await _supabaseClient.from('user_badges').insert(badges);
+      await _supabaseClient.from('user_badges').insert(userBadges);
     }
 
     return response;

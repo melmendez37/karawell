@@ -15,7 +15,7 @@ class BadgesDatabase {
       .map((data) => data.map((badgeMap) => UserBadges.fromMap(badgeMap)).toList());
 
   Future<Badges?> fetchBadge(String badgeId) async {
-    final response = await database.from('badges').select('*').eq('badge_id', badgeId).single();
+    final response = await database.from('badges').select('*').eq('id', badgeId).single();
 
     return Badges.fromMap(response);
   }

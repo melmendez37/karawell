@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class Badges{
-  final String badgeId;
+  final String id;
   final String name;
   final String imageUrl;
 
   Badges({
-    required this.badgeId,
+    required this.id,
     required this.name,
     required this.imageUrl,
   });
 
   factory Badges.fromMap(Map<String, dynamic> map){
     return Badges(
-      badgeId: map['badge_id'] as String,
+      id: map['id'] as String,
       name: map['name'] as String,
       imageUrl: map['image_url'] as String,
     );
@@ -21,7 +21,7 @@ class Badges{
 
   Map<String, dynamic> toMap(){
     return {
-      'badge_id': badgeId,
+      'id': id,
       'name': name,
       'image_url': imageUrl,
     };
