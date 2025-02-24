@@ -1,6 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/chat/chat_session_database.dart';
+import 'package:myapp/screens/streaks/streaks_database.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChatRoom extends StatelessWidget {
+class ChatRoom extends StatefulWidget{
+  const ChatRoom({super.key});
+
+  @override
+  State<ChatRoom> createState() => _ChatRoomState();
+}
+
+
+class _ChatRoomState extends State<ChatRoom> {
+  final supabase = Supabase.instance.client;
+
+  final stopwatch = Stopwatch();
+  final chatSessionDatabase = ChatSessionDatabase();
+  final streakDatabase = StreaksDatabase();
+
+  final _messageController = TextEditingController();
+  bool _isMessageSentToday = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isNewDay();
+  }
+
+  void isNewDay() async {
+    final userId = supabase.auth.currentUser?.id;
+    if(userId == null) return;
+
+    final response = await supabase
+      .from('user_streaks')
+      .select('last_message_date')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if(response != null && response['last_message_date'] != null){
+      final lastMessageDate = DateTime.parse(response['last_message_date']);
+      final now = DateTime.now();
+
+      setState(() {
+        _isMessageSentToday =
+            lastMessageDate.year == now.year &&
+            lastMessageDate.month == now.month &&
+            lastMessageDate.day == now.day;
+      });
+    } else {
+      _isMessageSentToday = false;
+    }
+  }
+
+  void sendMessage() async{
+    final message = _messageController.text.trim();
+    if(message.isNotEmpty){
+      if(!_isMessageSentToday){
+        //update user streaks after sending message per day
+        _updateUserStreaks();
+        setState(() {
+          _isMessageSentToday = true;
+        });
+      }
+
+      if(!stopwatch.isRunning){
+        await chatSessionDatabase.startChatSession();
+      }
+
+      _messageController.clear();
+    }
+  }
+
+  void endChatSession() async {
+    await chatSessionDatabase.endChatSession();
+  }
+
+  void _updateUserStreaks() async {
+    final userId = supabase.auth.currentUser?.id;
+    if(userId != null){
+      await streakDatabase.updateUserStreaks(userId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +99,14 @@ class ChatRoom extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: true,
+        leading: BackButton(
+          onPressed: () async {
+            endChatSession();
+            if(context.mounted){
+              Navigator.pop(context);
+            }
+          },
+        ),
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -65,6 +153,7 @@ class ChatRoom extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextField(
+                            controller: _messageController,
                             decoration: InputDecoration(
                               hintText: 'Type a message...',
                               hintStyle: TextStyle(
@@ -96,9 +185,7 @@ class ChatRoom extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: (){
-
-                          },
+                          onPressed: sendMessage,
                           icon: Icon(
                               Icons.send,
                               color: Color(0xFFF2F2F2)

@@ -26,32 +26,42 @@ class StreaksDatabase {
     int counter = 0;
     int longestStreak = 0;
 
+
     if(response != null) {
-      DateTime lastOpened = DateTime.parse(response['last_opened']);
+      DateTime? lastMessageDate = response['last_message_date'] != null ? DateTime.parse(response['last_message_date']) : null;
 
-      //check if day is a new day, compare based on date, not time
-      DateTime lastOpenedDate = DateTime(lastOpened.year, lastOpened.month, lastOpened.day);
-      DateTime todayDate = DateTime(today.year, today.month, today.day);
-
-      //check if its a new day
-      if(todayDate.isAfter(lastOpenedDate)){
-        //increment the counter
-        counter = response['counter'] + 1;
+      if(lastMessageDate == null){
+        counter = 1;
+        longestStreak = 1;
       } else {
-        //dont add counter
-        counter = response['counter'];
+        //check if day is a new day, compare based on date, not time
+        DateTime lastDate = DateTime(lastMessageDate.year, lastMessageDate.month, lastMessageDate.day);
+        DateTime todayDate = DateTime(today.year, today.month, today.day);
+
+        //check if its a new day
+        if(todayDate.isAfter(lastDate)){
+          //increment the counter
+          counter = response['counter'] + 1;
+        } else {
+          //dont add counter
+          counter = response['counter'];
+        }
+
+        //update longest streak if current counter < itself
+        longestStreak = response['longest_streak'];
+        if(counter > longestStreak){
+          longestStreak = counter;
+        }
       }
 
-      //update longest streak if current counter < itself
-      longestStreak = response['longest_streak'];
-      if(counter > longestStreak){
-        longestStreak = counter;
-      }
+
+
+
 
       //update db with today's date
       await supabase.from('user_streaks')
         .update({
-          'last_opened': today.toIso8601String(),
+          'last_message_date': today.toIso8601String(),
           'counter': counter,
           'longest_streak': longestStreak,
         }).eq('id', userId);
@@ -59,11 +69,13 @@ class StreaksDatabase {
       //insert new data if not found
       await supabase.from('user_streaks').insert({
         'id': userId,
-        'last_opened': today.toIso8601String(),
-        'counter': counter,
-        'longest_streak': counter
+        'last_message_date': today.toIso8601String(),
+        'counter': 1,
+        'longest_streak': 1
       });
     }
+
+    //print(counter);
 
     //await updateBadgeStatus(counter, userId);
   }

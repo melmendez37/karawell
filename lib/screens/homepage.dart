@@ -9,7 +9,7 @@ import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/streaks/streaks_page.dart';
-import 'package:myapp/screens/chat_room.dart';
+import 'package:myapp/screens/chat/chat_room.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,17 +38,9 @@ class _HomepageState extends State<Homepage> {
     await authService.signOut();
   }
 
-  void _updateUserStreaks() async {
-    final userId = supabase.auth.currentUser?.id;
-    if(userId != null){
-      await streakDatabase.updateUserStreaks(userId);
-    }
-  }
-
   @override
   void initState(){
     super.initState();
-    _updateUserStreaks();
   }
 
   @override

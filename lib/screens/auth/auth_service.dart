@@ -32,13 +32,12 @@ class AuthService {
     //User streak
     await _supabaseClient.from('user_streaks').insert({
       'id': userId,
-      'last_opened': DateTime.now().toIso8601String(),
+      'last_message_date': null,
       'counter': 1,
     });
 
     //Generate user badges
     final badges = await _supabaseClient.from('badges').select('id');
-    print("Fetched Badges: $badges");
 
     if(badges.isNotEmpty){
       final userBadges = badges.map((badge) => {
