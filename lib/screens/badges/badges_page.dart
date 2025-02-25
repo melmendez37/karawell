@@ -46,84 +46,97 @@ class _BadgesPageState extends State<BadgesPage> {
 
       body: StreamBuilder<List<UserBadges>>(
           stream: badgesDatabase.userBadgeStream,
-          builder: (context, snapshot){
-            if(!snapshot.hasData){
+          builder: (context, userBadgeSnapshot){
+            if(!userBadgeSnapshot.hasData){
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            final badges = snapshot.data!;
-
-           return ListView.builder(
-             itemCount: badges.length,
-               itemBuilder: (context, index){
-                  final userBadge = badges[index];
+            final userBadges = userBadgeSnapshot.data!;
 
 
+            return FutureBuilder<List<Badges>>(
+               future: badgesDatabase.fetchAllBadges(),
+               builder: (context, badgeSnapshot){
+                 if(badgeSnapshot.connectionState == ConnectionState.waiting){
+                   return ListTile(
+                     title: Text('loading...'),
+                     leading: CircularProgressIndicator(),
+                   );
+                 }
 
-                  return FutureBuilder<Badges?>(
-                      future: badgesDatabase.fetchBadge(userBadge.badgeId),
-                      builder: (context, badgeSnapshot){
-                        if(badgeSnapshot.connectionState == ConnectionState.waiting){
-                          return ListTile(
-                            title: Text('loading...'),
-                            leading: CircularProgressIndicator(),
-                          );
-                        }
+                 if(badgeSnapshot.hasError || badgeSnapshot.data == null){
+                   return ListTile(
+                     title: Text('no badge BRUH.'),
+                   );
+                 }
 
-                        if(badgeSnapshot.hasError || badgeSnapshot.data == null){
-                          return ListTile(
-                            title: Text('no badge BRUH.'),
-                          );
-                        }
+                 final allBadges = badgeSnapshot.data!;
+                 final badgeMap = {for (var badge in allBadges) badge.id: badge};
 
-                        final badge = badgeSnapshot.data!;
-                        final isUnlocked = userBadge.isUnlocked;
+                 if (userBadges.isEmpty) {
+                   return const Center(
+                     child: Text("You haven't earned any badges yet."),
+                   );
+                 }
 
-                        return Expanded(
-                            child: Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: isUnlocked ? Colors.transparent : Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ListTile(
-                                leading: ColorFiltered(
-                                  colorFilter: isUnlocked ? ColorFilter.mode(Colors.transparent, BlendMode.color)
-                                      : ColorFilter.mode(Colors.white, BlendMode.color),
-                                  child: Image.network(
-                                    badge.imageUrl,
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                ),
-                                title: Text(
-                                  badge.name,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'DM_Sans',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                 return ListView.builder(
+                     itemCount: userBadges.length,
+                     itemBuilder: (context, index){
+                       final userBadge = userBadges[index];
+                       final badge = badgeMap[userBadge.badgeId];
 
-                                ),
-                                subtitle: Text(
-                                  isUnlocked ? "Unlocked" : "Locked",
-                                  style: TextStyle(
-                                      fontFamily: 'DM_Sans',
-                                      fontSize: 16,
-                                      fontStyle: FontStyle.italic
-                                  ),
-                                ),
-                                tileColor: isUnlocked ? Colors.transparent : Colors.white,
-                              ),
+                       if (badge == null) {
+                         return const ListTile(
+                           title: Text('Badge not found.'),
+                           subtitle: Text('This badge no longer exists.'),
+                         );
+                       }
 
-                            )
+                       final isUnlocked = userBadge.isUnlocked;
 
-                        );
-                      }
-                  );
+                       return Container(
+                         padding: EdgeInsets.all(15),
+                         decoration: BoxDecoration(
+                           color: isUnlocked ? Colors.transparent : Colors.white,
+                           borderRadius: BorderRadius.circular(10),
+                         ),
+                         child: ListTile(
+                           leading: ColorFiltered(
+                             colorFilter: isUnlocked ? ColorFilter.mode(Colors.transparent, BlendMode.color)
+                                 : ColorFilter.mode(Colors.white, BlendMode.color),
+                             child: Image.network(
+                               badge.imageUrl,
+                               width: 100,
+                               height: 100,
+                             ),
+                           ),
+                           title: Text(
+                             badge.name,
+                             style: TextStyle(
+                                 color: Colors.black,
+                                 fontFamily: 'DM_Sans',
+                                 fontSize: 18,
+                                 fontWeight: FontWeight.bold
+                             ),
+
+                           ),
+                           subtitle: Text(
+                             isUnlocked ? "Unlocked" : "Locked",
+                             style: TextStyle(
+                                 fontFamily: 'DM_Sans',
+                                 fontSize: 16,
+                                 fontStyle: FontStyle.italic
+                             ),
+                           ),
+                           tileColor: isUnlocked ? Colors.transparent : Colors.white,
+                         ),
+
+                       );
+
+                     }
+                 );
                }
            );
           }

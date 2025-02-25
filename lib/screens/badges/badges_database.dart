@@ -15,23 +15,39 @@ class BadgesDatabase {
       .map((data) => data.map((badgeMap) => UserBadges.fromMap(badgeMap)).toList());
 
   //fetch from badges table
-  Future<Badges?> fetchBadge(String badgeId) async {
-    final response = await database.from('badges').select('*').eq('id', badgeId).single();
+  Future<List<Badges>> fetchAllBadges() async {
+    final response = await database.from('badges').select('*');
 
-    return Badges.fromMap(response);
+    return response.map((badge) => Badges.fromMap(badge)).toList();
   }
 
   Future<void> updateBadgeStatus(int counter, String userId) async {
-    //fetch user badges
-    final badges = await Supabase.instance.client.from('user_badges').select().eq('user_id', userId);
+    //fetch existing badges id
+    final badgeIds = (await Supabase.instance.client
+        .from('badges').select('id').eq('unlock_at', counter))
+        .map((b) => b['id'])
+        .toList() ?? [];
 
-    for (var badge in badges){
-      //if badge unlocks at 1,3,5,7,14,21 then update its status
-      if([1,3,5,7,14,21].contains(counter) && !badge['is_unlocked']){
-        await database.from('user_badges').update({
-          'is_unlocked': true
-        }).eq('id', badge['id']);
-      }
+    //print(badgeIds);
+
+    if (badgeIds.isEmpty) return;
+
+    //fetch user badges that match locked badge ids
+    final userBadges = await database
+        .from('user_badges')
+        .select('badge_id')
+        .eq('user_id', userId)
+        .eq('is_unlocked', false)
+        .inFilter('badge_id', badgeIds);
+
+    if(userBadges.isNotEmpty){
+      //fetch user badges id
+      final userBadgeIds = userBadges.map((badge) => badge['badge_id']).toList();
+
+      //update to unlock the badges
+      await database.from('user_badges').update({
+        'is_unlocked': true
+      }).inFilter('badge_id', userBadgeIds);
     }
   }
 }

@@ -23,12 +23,14 @@ class StreaksDatabase {
         .maybeSingle();
 
     DateTime today = DateTime.now();
-    int counter = 0;
-    int longestStreak = 0;
+    int counter = response?['counter'] ?? 0;
+    int longestStreak = response?['longest_streak'] ?? 0;
 
 
     if(response != null) {
-      DateTime? lastMessageDate = response['last_message_date'] != null ? DateTime.parse(response['last_message_date']) : null;
+      DateTime? lastMessageDate = response['last_message_date'] != null
+          ? DateTime.parse(response['last_message_date'])
+          : null;
 
       if(lastMessageDate == null){
         counter = 1;
@@ -40,11 +42,14 @@ class StreaksDatabase {
 
         //check if its a new day
         if(todayDate.isAfter(lastDate)){
-          //increment the counter
-          counter = response['counter'] + 1;
-        } else {
-          //dont add counter
-          counter = response['counter'];
+          int daysDiff = todayDate.difference(lastDate).inDays;
+          if(daysDiff == 1){
+            //increment the counter if within one day has passed
+            counter = response['counter'] + 1;
+          } else {
+            //dont add counter if more than one day has passed
+            counter = 1;
+          }
         }
 
         //update longest streak if current counter < itself
@@ -53,10 +58,6 @@ class StreaksDatabase {
           longestStreak = counter;
         }
       }
-
-
-
-
 
       //update db with today's date
       await supabase.from('user_streaks')
@@ -74,22 +75,7 @@ class StreaksDatabase {
         'longest_streak': 1
       });
     }
-
-    //print(counter);
-
-    //await updateBadgeStatus(counter, userId);
   }
 
-  // void chatroomOpened(String userId) async {
-  //   await updateUserStreaks(userId, 'opened_chatroom');
-  // }
-  //
-  // void messageSent(String userId) async {
-  //   await updateUserStreaks(userId, 'message_sent');
-  // }
-  //
-  // void messageReacted(String userId) async {
-  //   await updateUserStreaks(userId, 'message_reacted');
-  // }
 }
 

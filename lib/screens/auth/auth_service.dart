@@ -1,3 +1,4 @@
+import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
@@ -48,6 +49,8 @@ class AuthService {
 
       //insert into user badges table
       await _supabaseClient.from('user_badges').insert(userBadges);
+
+      await BadgesDatabase().updateBadgeStatus(1, userId!);
     }
 
     return response;

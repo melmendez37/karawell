@@ -37,9 +37,10 @@ class _ChatRoomState extends State<ChatRoom> {
       .eq('id', userId)
       .maybeSingle();
 
+    final now = DateTime.now();
+
     if(response != null && response['last_message_date'] != null){
       final lastMessageDate = DateTime.parse(response['last_message_date']);
-      final now = DateTime.now();
 
       setState(() {
         _isMessageSentToday =
@@ -48,7 +49,9 @@ class _ChatRoomState extends State<ChatRoom> {
             lastMessageDate.day == now.day;
       });
     } else {
-      _isMessageSentToday = false;
+      setState(() {
+        _isMessageSentToday = false;
+      });
     }
   }
 
