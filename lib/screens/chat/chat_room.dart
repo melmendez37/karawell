@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/chat/chat_session_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,6 +18,7 @@ class _ChatRoomState extends State<ChatRoom> {
   final stopwatch = Stopwatch();
   final chatSessionDatabase = ChatSessionDatabase();
   final streakDatabase = StreaksDatabase();
+  final badgesDatabase = BadgesDatabase();
 
   final _messageController = TextEditingController();
   bool _isMessageSentToday = false;
@@ -82,6 +84,14 @@ class _ChatRoomState extends State<ChatRoom> {
     final userId = supabase.auth.currentUser?.id;
     if(userId != null){
       await streakDatabase.updateUserStreaks(userId);
+
+      final response = await supabase.from('user_streaks')
+          .select('counter').eq('id', userId).maybeSingle();
+
+      if (response != null && response['counter'] != null) {
+        final counter = response['counter'];
+        await badgesDatabase.updateBadgeStatus(counter, userId);
+      }
     }
   }
 

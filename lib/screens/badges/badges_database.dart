@@ -16,10 +16,30 @@ class BadgesDatabase {
 
   //fetch from badges table
   Future<List<Badges>> fetchAllBadges() async {
-    final response = await database.from('badges').select('*');
+    final userId = database.auth.currentUser?.id;
+    //fetch user streaks
+    final userStreak = await database
+        .from('user_streaks')
+        .select('counter')
+        .eq('id', userId as Object)
+        .maybeSingle();
+
+    if (userStreak == null || userStreak['counter'] == null){
+      return [];
+    }
+
+    final int counter = userStreak['counter'];
+
+    final response = await database
+        .from('badges')
+        .select()
+        .order('unlock_at', ascending: false);
 
     return response.map((badge) => Badges.fromMap(badge)).toList();
-  }
+
+
+
+}
 
   Future<void> updateBadgeStatus(int counter, String userId) async {
     //fetch existing badges id
@@ -28,7 +48,7 @@ class BadgesDatabase {
         .map((b) => b['id'])
         .toList() ?? [];
 
-    //print(badgeIds);
+    print(badgeIds);
 
     if (badgeIds.isEmpty) return;
 

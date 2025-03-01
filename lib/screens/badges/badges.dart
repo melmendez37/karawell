@@ -18,7 +18,7 @@ class Badges{
       id: map['id'] as String,
       name: map['name'] as String,
       imageUrl: map['image_url'] as String,
-      unlockAt: map['unlock_at'] as int,
+      unlockAt: (map['unlock_at'] as num).toInt(),
     );
   }
 

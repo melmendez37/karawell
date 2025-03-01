@@ -18,12 +18,17 @@ class _BadgesPageState extends State<BadgesPage> {
   final badgesDatabase = BadgesDatabase();
 
   @override
+  void initState(){
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 90,
-        backgroundColor: Color(0xffffffff),
+        backgroundColor: Color(0xfff2f2f2),
         title: Text(
           'Badges',
           style: TextStyle(
@@ -84,6 +89,7 @@ class _BadgesPageState extends State<BadgesPage> {
                  return ListView.builder(
                      itemCount: userBadges.length,
                      itemBuilder: (context, index){
+
                        final userBadge = userBadges[index];
                        final badge = badgeMap[userBadge.badgeId];
 
@@ -99,7 +105,7 @@ class _BadgesPageState extends State<BadgesPage> {
                        return Container(
                          padding: EdgeInsets.all(15),
                          decoration: BoxDecoration(
-                           color: isUnlocked ? Colors.transparent : Colors.white,
+                           color: isUnlocked ? Colors.transparent : Colors.transparent,
                            borderRadius: BorderRadius.circular(10),
                          ),
                          child: ListTile(

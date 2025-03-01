@@ -5,7 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:myapp/screens/auth/auth_gate.dart';
 import 'package:myapp/screens/auth/change_password.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/notifications/notifications_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() async {
   //load .env
@@ -16,6 +19,10 @@ void main() async {
       url: dotenv.env['SUPABASE_URL'] ?? '',
       anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
   );
+
+  tz.initializeTimeZones();
+  NotificationService notificationService = NotificationService();
+  await notificationService.initNotifications(); // Initialize notifications
 
   runApp(const MyApp());
 }

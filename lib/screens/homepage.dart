@@ -5,6 +5,7 @@ import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/badges/badges_page.dart';
 import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/notifications/notifications_service.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
@@ -22,6 +23,8 @@ class Homepage extends StatefulWidget{
 }
 
 class _HomepageState extends State<Homepage> {
+  final NotificationService notificationService = NotificationService();
+
   //get auth service
   final authService = AuthService();
 
@@ -381,10 +384,7 @@ class _HomepageState extends State<Homepage> {
 
                       ElevatedButton(
                         onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => JournalingPage()),
-                          );
+
                         },
 
                         style: ElevatedButton.styleFrom(
@@ -403,7 +403,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              'Conversations of the app',
+                              'Send notifications',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
                                 fontSize: 18,
@@ -427,10 +427,8 @@ class _HomepageState extends State<Homepage> {
 
                       ElevatedButton(
                         onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => JournalingPage()),
-                          );
+                          DateTime selectedTime = DateTime.now().add(Duration(seconds: 10));
+                          notificationService.schedNotifications(selectedTime);
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xffd9d9d9),
@@ -448,7 +446,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              'Sample chat',
+                              'Schedule notifications',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
                                 fontSize: 18,
