@@ -1,3 +1,4 @@
+import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:myapp/screens/streaks/streaks.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -66,6 +67,13 @@ class StreaksDatabase {
           'counter': counter,
           'longest_streak': longestStreak,
         }).eq('id', userId);
+
+      //update user of their streak count
+      await NotificationService().showNotification(
+          title: "Congratulations!",
+          body: "You reached $counter days using KaraWell! Keep it up!",
+      );
+
     } else {
       //insert new data if not found
       await supabase.from('user_streaks').insert({
@@ -75,6 +83,8 @@ class StreaksDatabase {
         'longest_streak': 1
       });
     }
+
+
   }
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/badges/user_badges.dart';
+import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:myapp/screens/badges/badges.dart';
 
@@ -64,6 +65,11 @@ class BadgesDatabase {
       await database.from('user_badges').update({
         'is_unlocked': true
       }).inFilter('badge_id', userBadgeIds);
+
+      await NotificationService().showNotification(
+        title: "New Badge",
+        body: "You just received a new badge!"
+      );
     }
   }
 }
