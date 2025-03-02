@@ -5,7 +5,7 @@ import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/badges/badges_page.dart';
 import 'package:myapp/screens/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
-import 'package:myapp/screens/notifications/notifications_service.dart';
+import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
@@ -383,9 +383,7 @@ class _HomepageState extends State<Homepage> {
                       SizedBox(height: 15),
 
                       ElevatedButton(
-                        onPressed: (){
-
-                        },
+                        onPressed: ()  {},
 
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xffd9d9d9),
@@ -403,7 +401,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              'Send notifications',
+                              'Journaling',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
                                 fontSize: 18,
@@ -426,10 +424,7 @@ class _HomepageState extends State<Homepage> {
                       SizedBox(height: 20),
 
                       ElevatedButton(
-                        onPressed: (){
-                          DateTime selectedTime = DateTime.now().add(Duration(seconds: 10));
-                          notificationService.schedNotifications(selectedTime);
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xffd9d9d9),
                             padding: EdgeInsets.symmetric(
@@ -446,7 +441,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              'Schedule notifications',
+                              'Journaling',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
                                 fontSize: 18,
@@ -469,12 +464,7 @@ class _HomepageState extends State<Homepage> {
                       SizedBox(height: 20),
 
                       ElevatedButton(
-                        onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => JournalingPage()),
-                          );
-                        },
+                        onPressed: () {},
 
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xffd9d9d9),
@@ -492,7 +482,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              'Progress today',
+                              'Journaling',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
                                 fontSize: 18,

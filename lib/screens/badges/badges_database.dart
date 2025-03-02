@@ -30,11 +30,9 @@ class BadgesDatabase {
 
     final int counter = userStreak['counter'];
 
-    final response = await database
+    final List<Map<String, dynamic>> response = await database
         .from('badges')
-        .select()
-        .order('unlock_at', ascending: false);
-
+        .select().order('unlock_at', ascending: false);
     return response.map((badge) => Badges.fromMap(badge)).toList();
 
 
@@ -47,8 +45,6 @@ class BadgesDatabase {
         .from('badges').select('id').eq('unlock_at', counter))
         .map((b) => b['id'])
         .toList() ?? [];
-
-    print(badgeIds);
 
     if (badgeIds.isEmpty) return;
 

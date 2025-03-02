@@ -60,7 +60,6 @@ class _BadgesPageState extends State<BadgesPage> {
 
             final userBadges = userBadgeSnapshot.data!;
 
-
             return FutureBuilder<List<Badges>>(
                future: badgesDatabase.fetchAllBadges(),
                builder: (context, badgeSnapshot){
