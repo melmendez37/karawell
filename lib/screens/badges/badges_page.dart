@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/badges/badges_database.dart';
-import 'package:myapp/screens/badges/user_badges.dart';
+import 'package:KaraWell/screens/badges/badges_database.dart';
+import 'package:KaraWell/screens/badges/user_badges.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'badges.dart';

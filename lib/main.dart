@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:myapp/screens/auth/auth_gate.dart';
-import 'package:myapp/screens/auth/login_screen.dart';
-import 'package:myapp/screens/notifications/notification_service.dart';
+import 'package:KaraWell/screens/auth/auth_gate.dart';
+import 'package:KaraWell/screens/auth/login_screen.dart';
+import 'package:KaraWell/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 

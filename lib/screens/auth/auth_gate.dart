@@ -10,8 +10,8 @@ if authenticated -> homepage
 */
 
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/auth/login_screen.dart';
-import 'package:myapp/screens/homepage.dart';
+import 'package:KaraWell/screens/auth/login_screen.dart';
+import 'package:KaraWell/screens/homepage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthGate extends StatelessWidget {

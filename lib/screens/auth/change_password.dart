@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/profile/my_profile.dart';
+import 'package:KaraWell/screens/profile/my_profile.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:KaraWell/screens/auth/login_screen.dart';
 
 class ChangePassword extends StatefulWidget {
   final String token;

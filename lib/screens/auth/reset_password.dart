@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/auth/change_password.dart';
+import 'package:KaraWell/screens/auth/change_password.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ResetPassword extends StatefulWidget{

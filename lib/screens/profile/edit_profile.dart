@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/auth/auth_service.dart';
-import 'package:myapp/screens/profile/profile.dart';
-import 'package:myapp/screens/profile/profile_database.dart';
+import 'package:KaraWell/screens/auth/auth_service.dart';
+import 'package:KaraWell/screens/profile/profile.dart';
+import 'package:KaraWell/screens/profile/profile_database.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfile extends StatefulWidget{

@@ -1,5 +1,5 @@
-import 'package:myapp/screens/notifications/notification_service.dart';
-import 'package:myapp/screens/streaks/streaks.dart';
+import 'package:KaraWell/screens/notifications/notification_service.dart';
+import 'package:KaraWell/screens/streaks/streaks.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StreaksDatabase {

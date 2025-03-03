@@ -1,4 +1,4 @@
-import 'package:myapp/screens/profile/profile.dart';
+import 'package:KaraWell/screens/profile/profile.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileDatabase{

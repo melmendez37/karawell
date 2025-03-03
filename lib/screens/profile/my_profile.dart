@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/auth/auth_service.dart';
-import 'package:myapp/screens/auth/change_password.dart';
-import 'package:myapp/screens/profile/edit_profile.dart';
-import 'package:myapp/screens/profile/profile_database.dart';
-import 'package:myapp/screens/profile/profile_picture.dart';
+import 'package:KaraWell/screens/auth/auth_service.dart';
+import 'package:KaraWell/screens/auth/change_password.dart';
+import 'package:KaraWell/screens/profile/edit_profile.dart';
+import 'package:KaraWell/screens/profile/profile_database.dart';
+import 'package:KaraWell/screens/profile/profile_picture.dart';
 
 class MyProfile extends StatefulWidget{
   const MyProfile({super.key});
