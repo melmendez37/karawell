@@ -3,12 +3,14 @@ class Profile{
   final String? username;
   final String? tagline;
   final String? phone;
+  final String? imageUrl;
 
   Profile({
     required this.id,
     this.username,
     this.tagline,
     this.phone,
+    this.imageUrl
   });
 
   //map -> profile
@@ -18,6 +20,7 @@ class Profile{
       username: map['username'] as String?,
       tagline: map['tagline'] as String?,
       phone: map['phone'] as String?,
+      imageUrl: map['image_url'] as String?
     );
   }
 
@@ -28,6 +31,7 @@ class Profile{
       'username': username,
       'tagline': tagline,
       'phone': phone,
+      'imageUrl': imageUrl
     };
   }
 }

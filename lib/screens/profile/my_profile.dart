@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:KaraWell/screens/auth/auth_service.dart';
-import 'package:KaraWell/screens/auth/change_password.dart';
 import 'package:KaraWell/screens/profile/edit_profile.dart';
 import 'package:KaraWell/screens/profile/profile_database.dart';
 import 'package:KaraWell/screens/profile/profile_picture.dart';
@@ -72,7 +71,9 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/img-1.jpg'),
+                    image: profile.imageUrl != null
+                      ? NetworkImage(profile.imageUrl!)
+                      : AssetImage('assets/img-1.jpg'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(0.5),
@@ -179,7 +180,7 @@ class _MyProfileState extends State<MyProfile> {
 
                                 //where the phone number should be
                                 Text(
-                                  "+639${profile.phone}" ?? 'Not added',
+                                  profile.phone != null ? "+639${profile.phone}" : 'Not added',
                                   style: TextStyle(
                                       fontFamily: 'DM_Sans',
                                       fontSize: 14

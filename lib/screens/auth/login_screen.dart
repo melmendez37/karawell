@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:KaraWell/screens/auth/register_screen.dart';
 import 'package:KaraWell/screens/auth/auth_service.dart';
-import 'package:KaraWell/screens/auth/reset_password.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -151,26 +150,6 @@ class _LoginPageState extends State<LoginScreen> {
                 ),
 
                 SizedBox(height:20),
-
-                TextButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ResetPassword()),
-                      );
-                    },
-                    child: Text(
-                      'Forgot password?',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'DM_Sans',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                      ),
-                    ),
-                ),
-
-                SizedBox(height: 20),
 
                 ElevatedButton(
                     onPressed: login,

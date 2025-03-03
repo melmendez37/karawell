@@ -71,11 +71,23 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        Icons.person,
-                        color: Color(0xFFF2F2F2),
-                        size: 40,
+                      Container(
+                        height: 50,
+                        width: 50,
+                        child: CircleAvatar(
+                          backgroundImage: profile.imageUrl != null
+                              ? NetworkImage(profile.imageUrl!)
+                              : null,
+                          radius: 50,
+                          child: profile.imageUrl == null
+                              ? Icon(
+                            Icons.person,
+                            color: Color(0xFFF2F2F2),
+                            size: 40,
+                          ) : null,
+                        ),
                       ),
+
 
                       SizedBox(width: 10),
 
@@ -525,14 +537,27 @@ class _HomepageState extends State<Homepage> {
               return ListView(
                 children: [
                   DrawerHeader(
+                    decoration: BoxDecoration(
+                      image: profile.imageUrl != null
+                          ? DecorationImage(
+                            image: NetworkImage(profile.imageUrl!),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.5),
+                            BlendMode.darken)
+                          )
+                          : null,
+                    ),
                     child: Text(
                       'Welcome, ${profile.username ?? "No username yet."}' ,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
-                          fontSize: 22.0
+                          fontSize: 22.0,
+                          color: profile.imageUrl != null ? Colors.white : Colors.black
                       ),
-                    ),
+                    )
+
 
                   ),
                   ListTile(

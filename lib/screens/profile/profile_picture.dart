@@ -13,6 +13,7 @@ class ProfilePicture extends StatefulWidget {
 
 class _ProfilePictureState extends State<ProfilePicture>{
   File? _imageFile;
+  final supabase = Supabase.instance.client;
 
   //choose image
   Future pickImage() async {
@@ -37,15 +38,26 @@ class _ProfilePictureState extends State<ProfilePicture>{
     //generate unique file path
     final fileName = DateTime.now().millisecondsSinceEpoch.toString();
     final path = 'uploads/$fileName';
+    final user = supabase.auth.currentUser?.id;
 
     //upload to db storage
-    await Supabase.instance.client.storage
+    await supabase.storage
         //upload to this bucket
         .from('images')
         .upload(path, _imageFile!).then((value) => 
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Picture successfully added.')))
     );
+
+    final publicUrl = supabase.storage.from('images').getPublicUrl(path);
+
+    //update user profile with the image URL
+    await supabase
+        .from('profiles')
+        .update({'image_url' : publicUrl})
+        .match({'id': user as String});
+
+    Navigator.pop(context);
   }
 
   @override
@@ -57,9 +69,13 @@ class _ProfilePictureState extends State<ProfilePicture>{
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 10,),
+
             //image preview
             _imageFile != null ? Image.file(_imageFile!) :
             const Text('No picture added..'),
+
+           SizedBox(height: 35),
 
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
