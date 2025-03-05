@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:myapp/screens/auth/auth_gate.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/dependency_injection.dart';
 import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,11 +37,12 @@ void main() async {
     await notificationService.scheduleNotification(
       title: "Daily Update",
       body: "Good day! Don't forget to check in!",
-      hour: 16,
-      minute: 29,
+      hour: 20,
+      minute: 0,
     );
   });
 
+  DependencyInjection.init();
 }
 
 class MyApp extends StatelessWidget{
@@ -47,7 +50,7 @@ class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return const MaterialApp(
+    return const GetMaterialApp(
       home: AuthGate(),
     );
   }
