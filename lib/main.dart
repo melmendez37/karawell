@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:KaraWell/screens/auth/auth_gate.dart';
-import 'package:KaraWell/screens/auth/login_screen.dart';
-import 'package:KaraWell/screens/notifications/notification_service.dart';
+import 'package:myapp/screens/auth/auth_gate.dart';
+import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
@@ -23,22 +22,24 @@ void main() async {
 
   tz.initializeTimeZones();
   final notificationService = NotificationService();
-  notificationService.initNotification(); // Initialize notifications
-
-  await notificationService.scheduleNotification(
-      title: "Daily Update",
-      body: "Good day! Don't forget to check in!",
-      hour: 10,
-      minute: 0,
-  );
+  await notificationService.initNotification(); // Initialize notifications
 
   runApp(const MyApp());
-}
 
-Future<void> requestPermission() async {
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final androidImplementation = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>();
+  Future.delayed(Duration(seconds: 1), () async {
+    await notificationService.showNotification(
+        title: "Welcome back!",
+        body: "We welcome you again."
+    );
+
+    await notificationService.scheduleNotification(
+      title: "Daily Update",
+      body: "Good day! Don't forget to check in!",
+      hour: 16,
+      minute: 29,
+    );
+  });
+
 }
 
 class MyApp extends StatelessWidget{

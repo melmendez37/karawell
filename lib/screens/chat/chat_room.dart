@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:KaraWell/screens/badges/badges_database.dart';
-import 'package:KaraWell/screens/chat/chat_session_database.dart';
-import 'package:KaraWell/screens/streaks/streaks_database.dart';
-import 'package:KaraWell/screens/notifications/notification_service.dart';
+import 'package:myapp/screens/badges/badges_database.dart';
+import 'package:myapp/screens/chat/chat_session_database.dart';
+import 'package:myapp/screens/streaks/streaks_database.dart';
+import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ChatRoom extends StatefulWidget{

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:KaraWell/screens/auth/register_screen.dart';
-import 'package:KaraWell/screens/auth/auth_service.dart';
+import 'package:myapp/screens/auth/register_screen.dart';
+import 'package:myapp/screens/auth/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

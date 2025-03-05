@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:KaraWell/screens/badges/user_badges.dart';
-import 'package:KaraWell/screens/notifications/notification_service.dart';
+import 'package:myapp/screens/badges/user_badges.dart';
+import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:KaraWell/screens/badges/badges.dart';
+import 'package:myapp/screens/badges/badges.dart';
 
 class BadgesDatabase {
   //Database -> badges

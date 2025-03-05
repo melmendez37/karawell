@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 
@@ -27,8 +28,21 @@ class NotificationService{
       android: initSettingsAndroid,
     );
 
-    //init the plugin
-    await notificationsPlugin.initialize(initSettings);
+    try {
+      await notificationsPlugin.initialize(initSettings);
+      print("Notification Plugin Initialized Successfully");
+    } catch (e) {
+      print("Error initializing notifications: $e");
+    }
+
+    if(await Permission.notification.isDenied){
+      await Permission.notification.request();
+    }
+
+    if(await Permission.scheduleExactAlarm.isDenied){
+      await Permission.scheduleExactAlarm.request();
+    }
+    print("Before setting _isInitialized: $_isInitialized");
 
     _isInitialized = true;
     print("Notifications Initialized: ${_isInitialized}");
@@ -47,12 +61,6 @@ class NotificationService{
       ),
     );
   }
-
-  // Future<void> requestPermissions() async {
-  //   await notificationsPlugin
-  //       .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-  //       ?.requestPermission();
-  // }
 
   //show immediate notifications
   Future<void> showNotification({
@@ -114,6 +122,8 @@ class NotificationService{
   Future<void> cancelAllNotifications() async {
     await notificationsPlugin.cancelAll();
   }
+
+
 
 
 }
