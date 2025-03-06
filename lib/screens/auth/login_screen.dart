@@ -10,37 +10,37 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginScreen> {
-  //get auth service
-  final authService  = AuthService();
-
-  //text controllers
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  //when login button is pressed
-  void login() async {
-    //prepare data
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
-    //attempt logging in,
-    try{
-      await authService.signInWithEmailPassword(email, password);
-
-    }
-
-    //catch errors
-    catch (e) {
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: $e"))
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    //get auth service
+    final authService  = AuthService();
+
+    //text controllers
+    final _emailController = TextEditingController();
+    final _passwordController = TextEditingController();
+
+    //when login button is pressed
+    void login() async {
+      //prepare data
+      final email = _emailController.text;
+      final password = _passwordController.text;
+
+      //attempt logging in,
+      try{
+        await authService.signInWithEmailPassword(email, password);
+
+      }
+
+      //catch errors
+      catch (e) {
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Error: $e"))
+          );
+        }
+      }
+    }
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -179,7 +179,7 @@ class _LoginPageState extends State<LoginScreen> {
 
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => RegisterScreen()),
                       );

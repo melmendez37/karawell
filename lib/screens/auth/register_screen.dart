@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/auth/login_screen.dart';
 
 import 'auth_service.dart';
 
@@ -233,7 +234,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
