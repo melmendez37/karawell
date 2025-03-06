@@ -378,12 +378,12 @@ class _HomepageState extends State<Homepage> {
                     ],
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 40),
 
                   Column(
                     children: [
                       Text(
-                        'Activity log',
+                        "Note what's on your mind!",
                         style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'DM_Sans',
@@ -392,132 +392,72 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ),
 
-                      SizedBox(height: 15),
+                      SizedBox(height: 10),
 
-                      ElevatedButton(
-                        onPressed: () async {
-                          //update user of their streak count
-                          await NotificationService().showNotification(
-                              title: "Congratulations!",
-                              body: "You reached days using KaraWell! Keep it up!",
-                          );
-                        },
+                      SizedBox(
+                          height: 250,
+                          child: ElevatedButton(
+                            onPressed: ()  {
+                              //insert navigation to the journal page
+                            },
 
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xffd9d9d9),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffE3B448),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 15
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)
+                                )
                             ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)
+
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Opacity(
+                                        opacity: 0.8,
+                                        child: Image(
+                                          image: AssetImage('assets/journal-icon.jpg'),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+
+                                        ),
+                                      )
+                                    ),
+                                ),
+
+                                SizedBox(height: 20,),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      'Journaling',
+                                      style: TextStyle(
+                                        fontFamily: 'DM_Sans',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+
+                                    SizedBox(width: 8),
+
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.black,
+                                      size: 25,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             )
-                        ),
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Journaling',
-                              style: TextStyle(
-                                fontFamily: 'DM_Sans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-
-                            SizedBox(width: 8),
-
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Colors.black,
-                              size: 25,
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 20),
-
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xffd9d9d9),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)
-                            )
-                        ),
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Journaling',
-                              style: TextStyle(
-                                fontFamily: 'DM_Sans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-
-                            SizedBox(width: 8),
-
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Colors.black,
-                              size: 25,
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 20),
-
-                      ElevatedButton(
-                        onPressed: () {},
-
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xffd9d9d9),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)
-                            )
-                        ),
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Journaling',
-                              style: TextStyle(
-                                fontFamily: 'DM_Sans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-
-                            SizedBox(width: 8),
-
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Colors.black,
-                              size: 25,
-                            ),
-                          ],
-                        ),
+                          ),
                       ),
                     ],
                   )
