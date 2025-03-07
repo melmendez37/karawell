@@ -89,11 +89,12 @@ class _JournalingPageState extends State<JournalingPage> {
             final messages = snapshot.data!;
 
                 // this gives you the first millisecond of the day    
-                var startOfTheDay = DateTime(widget.date.year, widget.date.month, widget.date.day);
+                var startOfTheDay = DateTime.utc(widget.date.year, widget.date.month, widget.date.day);
                 //and this gives you the first millisecond of the next day   
                 var endOfTheDay = startOfTheDay.add(Duration(days: 1));
                 var currentDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
             final filteredMessages = messages.where((journal) => journal.date.isAfter(startOfTheDay) && journal.date.isBefore(endOfTheDay)).toList();
+
           return Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
