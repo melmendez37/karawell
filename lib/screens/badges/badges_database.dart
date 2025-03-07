@@ -47,6 +47,20 @@ class BadgesDatabase {
         .map((b) => b['id'])
         .toList() ?? [];
 
+    if(counter == 1){
+      final oneDayBadge = await database.from('badges')
+          .select('id')
+          .eq('unlock_at', 1)
+          .maybeSingle();
+      
+      await database.from('user_badges').update({
+        'is_unlocked': false
+      }).eq('user_id', userId).neq('badge_id', oneDayBadge?['id']);
+
+      print("All badges are reset except one day streak");
+      return;
+    }
+
     if (badgeIds.isEmpty) return;
 
     //fetch user badges that match locked badge ids
