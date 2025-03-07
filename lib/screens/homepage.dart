@@ -399,7 +399,10 @@ class _HomepageState extends State<Homepage> {
                           height: 250,
                           child: ElevatedButton(
                             onPressed: ()  {
-                              //insert navigation to the journal page
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => JournalingPages()),
+                              );
                             },
 
                             style: ElevatedButton.styleFrom(
