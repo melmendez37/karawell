@@ -485,31 +485,42 @@ class _HomepageState extends State<Homepage> {
               final profile = snapshot.data!.first;
 
               return ListView(
+                padding: EdgeInsets.zero,
                 children: [
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      image: profile.imageUrl != null
-                          ? DecorationImage(
-                            image: NetworkImage(profile.imageUrl!),
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.5),
-                            BlendMode.darken)
+                  SizedBox(
+                    height: 250,
+                    child: DrawerHeader(
+                        padding: EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          image: profile.imageUrl != null
+                              ? DecorationImage(
+                              image: NetworkImage(profile.imageUrl!),
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.5),
+                                  BlendMode.darken
+                              )
                           )
-                          : null,
+                              : null,
+                        ),
+                        child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
+                              child: Text(
+                                'Welcome, ${profile.username ?? "No username yet."}' ,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'DM_Sans',
+                                    fontSize: 22.0,
+                                    color: profile.imageUrl != null ? Colors.white : Colors.black
+                                ),
+                              ),
+                            )
+                        )
                     ),
-                    child: Text(
-                      'Welcome, ${profile.username ?? "No username yet."}' ,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'DM_Sans',
-                          fontSize: 22.0,
-                          color: profile.imageUrl != null ? Colors.white : Colors.black
-                      ),
-                    )
-
-
                   ),
+
                   ListTile(
                     leading: Icon(
                       Icons.book,
