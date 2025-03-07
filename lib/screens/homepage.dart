@@ -527,7 +527,7 @@ class _HomepageState extends State<Homepage> {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => JournalingPages()),
+                        MaterialPageRoute(builder: (context) => JournalingPage(date: DateTime.now(),)),
                       );
                     },
                   ),
