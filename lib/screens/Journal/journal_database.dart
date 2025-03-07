@@ -27,7 +27,7 @@ class JournalDatabase {
         }
   } 
     List<journal_Headers> makeHeaders(List<Journal> journals){
-    DateTime temp = DateTime(1999);
+    DateTime temp = journals.first.date;
     List<journal_Headers> result = [];
     int count = 0;
 
@@ -36,7 +36,7 @@ class JournalDatabase {
           if(journal.date.day == temp.day){
             count++;
           }
-          else if(journal.date.day.compareTo(temp.day) > 0){
+          else if(journal.date.day > temp.day){
             result.add(journal_Headers(date: temp, journalCount: count));
             count = 1;
             temp = journal.date;
@@ -48,6 +48,7 @@ class JournalDatabase {
           temp = journal.date;
         }
       }
+      result.add(journal_Headers(date: temp, journalCount: count));
       return result;
     }
 }

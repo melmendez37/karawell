@@ -236,7 +236,7 @@ class _HomepageState extends State<Homepage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    "${badge}",
+                                    "$badge",
                                     style: TextStyle(
                                       fontFamily: 'DM_Sans',
                                       fontSize: 24,

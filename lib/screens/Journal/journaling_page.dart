@@ -88,9 +88,6 @@ class _JournalingPageState extends State<JournalingPage> {
             // loaded!
             final messages = snapshot.data!;
 
-            if(messages.isEmpty){
-              return const Text("You still dont have any journals");
-            }
                 // this gives you the first millisecond of the day    
                 var startOfTheDay = DateTime(widget.date.year, widget.date.month, widget.date.day);
                 //and this gives you the first millisecond of the next day   
