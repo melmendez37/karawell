@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_time_patterns.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -86,11 +87,15 @@ class _JournalingPageState extends State<JournalingPage> {
             }
             // loaded!
             final messages = snapshot.data!;
+
+            if(messages.isEmpty){
+              return const Text("You still dont have any journals");
+            }
                 // this gives you the first millisecond of the day    
                 var startOfTheDay = DateTime(widget.date.year, widget.date.month, widget.date.day);
                 //and this gives you the first millisecond of the next day   
                 var endOfTheDay = startOfTheDay.add(Duration(days: 1));
-
+                var currentDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
             final filteredMessages = messages.where((journal) => journal.date.isAfter(startOfTheDay) && journal.date.isBefore(endOfTheDay)).toList();
           return Container(
             decoration: BoxDecoration(
@@ -102,6 +107,7 @@ class _JournalingPageState extends State<JournalingPage> {
                   Color(0xff057569),
                 ], // Gradient from https://learnui.design/tools/gradient-generator.html
                 tileMode: TileMode.mirror,
+                
               ),
             ),
             child: SafeArea(
@@ -149,6 +155,7 @@ class _JournalingPageState extends State<JournalingPage> {
                         )
                     ),
 
+                  if(widget.date.isAfter(currentDay))
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,

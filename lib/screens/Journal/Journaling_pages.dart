@@ -55,6 +55,9 @@ class _JournalingPagesState extends State<JournalingPages> {
               );
             }
             final journals = snapShot.data!;
+            if(journals.isEmpty){
+              return Text("still no journals, how bout try and put one");
+            }
             final headers = journalDatabase.makeHeaders(journals);
 
             return ListView.builder(
@@ -68,6 +71,7 @@ class _JournalingPagesState extends State<JournalingPages> {
                   child: ListTile(
                     title: Container(
                       decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(25),
                         // Create a gradient background
                        gradient: LinearGradient(
                           begin: Alignment.topLeft,
@@ -84,7 +88,7 @@ class _JournalingPagesState extends State<JournalingPages> {
                         style: const TextStyle(color: Colors.white)),  // Text for the main title
                         subtitle: Text("You wrote on the journal $count times", 
                         style: const TextStyle(color: Colors.white)), // Text for the subtitle
-                        leading: Icon(Icons.book), // Icon for the leading position
+                        leading: Icon(Icons.icecream_outlined), // Icon for the leading position
                         
                         onTap: () => {
                           Navigator.push(
