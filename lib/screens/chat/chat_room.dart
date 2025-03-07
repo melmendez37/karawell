@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/screens/chat/chat_session_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:myapp/screens/Messages/message.dart';
+import 'package:grouped_list/grouped_list.dart';
 
 class ChatRoom extends StatefulWidget{
   const ChatRoom({super.key});
@@ -23,6 +26,9 @@ class _ChatRoomState extends State<ChatRoom> {
 
   final _messageController = TextEditingController();
   bool _isMessageSentToday = false;
+  List<Message> messages = [
+    Message(message: "Hello there, it is nice to listen to you today", byUser: false, currentTime: DateTime.now())
+  ];
 
   @override
   void initState() {
@@ -46,7 +52,7 @@ class _ChatRoomState extends State<ChatRoom> {
       final lastMessageDate = DateTime.parse(response['last_message_date']);
 
       setState(() {
-        _isMessageSentToday =
+            _isMessageSentToday =
             lastMessageDate.year == now.year &&
             lastMessageDate.month == now.month &&
             lastMessageDate.day == now.day;
@@ -65,6 +71,7 @@ class _ChatRoomState extends State<ChatRoom> {
         //update user streaks after sending message per day
         _updateUserStreaks();
         setState(() {
+         
           _isMessageSentToday = true;
         });
       }
@@ -72,6 +79,9 @@ class _ChatRoomState extends State<ChatRoom> {
       if(!stopwatch.isRunning){
         await chatSessionDatabase.startChatSession();
       }
+      setState(() {
+        messages.add(Message(message: message, byUser: true, currentTime: DateTime.now()));
+      });
 
       _messageController.clear();
     }
@@ -157,10 +167,45 @@ class _ChatRoomState extends State<ChatRoom> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                      child: ListView(
-                        children: [
-                          //content idk
-                        ],
+                      child: GroupedListView<Message, DateTime>(
+                        padding: const EdgeInsets.all(8),
+                        reverse: true,
+                        order: GroupedListOrder.DESC,
+                        useStickyGroupSeparators: true,
+                        floatingHeader: true,
+                        elements: messages,
+                        groupBy: (message) => DateTime(
+                          message.currentTime.day,
+                          message.currentTime.hour,
+                          message.currentTime.minute,
+                        ),
+                        groupHeaderBuilder: (Message message) => SizedBox(
+                          height: 40,
+                          child: Center(
+                            child: Card(
+                              color: Theme.of(context).highlightColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  DateFormat("MMMM d,").add_jm().format(message.currentTime),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        itemBuilder: (context, Message message) => Align(
+                          alignment: message.byUser 
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                          child: Card(
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(message.message),
+                            ),
+                        ),
+                        ),
                       )
                   ),
 
@@ -173,6 +218,9 @@ class _ChatRoomState extends State<ChatRoom> {
                       children: [
                         Expanded(
                           child: TextField(
+                            style: TextStyle(
+                            color: Colors.white,
+                            ),
                             controller: _messageController,
                             decoration: InputDecoration(
                               hintText: 'Type a message...',
