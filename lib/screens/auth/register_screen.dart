@@ -60,17 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment(0.8, 1),
-            colors: <Color>[
-              Color(0xff00737C),
-              Color(0xff057569),
-            ], // Gradient from https://learnui.design/tools/gradient-generator.html
-            tileMode: TileMode.mirror,
-          ),
-        ),
+        color: Color(0xff027373),
         child: Padding(
           padding: EdgeInsets.all(50.0),
           child: Column(

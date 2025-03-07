@@ -72,23 +72,19 @@ class _JournalingPagesState extends State<JournalingPages> {
                     title: Container(
                       decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(25),
-                        // Create a gradient background
-                       gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment(0.8, 1),
-                          colors: <Color>[
-                            Color(0xff00737C),
-                            Color(0xff057569),
-                          ], // Gradient from https://learnui.design/tools/gradient-generator.html
-                          tileMode: TileMode.mirror,
-            ),
+                        color: Color(0xff057569),
+
                       ),
                       child: ListTile(
                         title: Text("At $date", 
-                        style: const TextStyle(color: Colors.white)),  // Text for the main title
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: "DM_Sans",
+                            fontWeight: FontWeight.bold
+                        )),  // Text for the main title
                         subtitle: Text("You wrote on the journal $count times", 
                         style: const TextStyle(color: Colors.white)), // Text for the subtitle
-                        leading: Icon(Icons.icecream_outlined), // Icon for the leading position
+                        leading: Icon(Icons.padding, color: Colors.white,), // Icon for the leading position
                         
                         onTap: () => {
                           Navigator.push(

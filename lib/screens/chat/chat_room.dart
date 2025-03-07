@@ -151,17 +151,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
 
         body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment(0.8, 1),
-              colors: <Color>[
-                Color(0xff00737C),
-                Color(0xff057569),
-              ], // Gradient from https://learnui.design/tools/gradient-generator.html
-              tileMode: TileMode.mirror,
-            ),
-          ),
+          color: Color(0xff027373),
           child: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +178,10 @@ class _ChatRoomState extends State<ChatRoom> {
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
                                   DateFormat("MMMM d,").add_jm().format(message.currentTime),
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "DM_Sans",
+                                  ),
                                 ),
                               ),
                             ),
@@ -202,7 +195,9 @@ class _ChatRoomState extends State<ChatRoom> {
                           elevation: 8,
                           child: Padding(
                             padding: const EdgeInsets.all(8),
-                            child: Text(message.message),
+                            child: Text(message.message, style: const TextStyle(
+                              fontFamily: "DM_Sans"
+                            ),),
                             ),
                         ),
                         ),
@@ -226,6 +221,7 @@ class _ChatRoomState extends State<ChatRoom> {
                               hintText: 'Type a message...',
                               hintStyle: TextStyle(
                                 color: Color(0xFFF2F2F2),
+                                fontFamily: "DM_Sans"
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),

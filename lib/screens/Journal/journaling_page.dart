@@ -96,18 +96,9 @@ class _JournalingPageState extends State<JournalingPage> {
             final filteredMessages = messages.where((journal) => journal.date.isAfter(startOfTheDay) && journal.date.isBefore(endOfTheDay)).toList();
 
           return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment(0.8, 1),
-                colors: <Color>[
-                  Color(0xff00737C),
-                  Color(0xff057569),
-                ], // Gradient from https://learnui.design/tools/gradient-generator.html
-                tileMode: TileMode.mirror,
-                
-              ),
-            ),
+            width: double.infinity,
+            height: double.infinity,
+            color: Color(0xff027373),
             child: SafeArea(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
