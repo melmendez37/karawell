@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:myapp/screens/Journal/journal.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:myapp/screens/Journal/journal_database.dart';
 
 class JournalingPage extends StatefulWidget{
-  const JournalingPage({super.key});
+  final DateTime date ;
+  const JournalingPage(
+      { 
+        required this.date, 
+        super.key
+      }
+    );
 
   @override
-  State<JournalingPage> createState() => _JournalingPageState();
+  State<JournalingPage> createState() => _JournalingPageState(); 
 }
 
-
 class _JournalingPageState extends State<JournalingPage> {
+  
   final supabase = Supabase.instance.client;
   final journalDatabase = JournalDatabase();
-
   final _messageController = TextEditingController();
 
   void sendMessage() async{
@@ -68,6 +74,7 @@ class _JournalingPageState extends State<JournalingPage> {
 
 
         body: StreamBuilder(
+          
           //listens to this stream
           stream: journalDatabase.stream,
           //UI builder
@@ -77,9 +84,14 @@ class _JournalingPageState extends State<JournalingPage> {
             if(!snapshot.hasData){
               return const Center(child: CircularProgressIndicator());
             }
-
             // loaded!
             final messages = snapshot.data!;
+                // this gives you the first millisecond of the day    
+                var startOfTheDay = DateTime(widget.date.year, widget.date.month, widget.date.day);
+                //and this gives you the first millisecond of the next day   
+                var endOfTheDay = startOfTheDay.add(Duration(days: 1));
+
+            final filteredMessages = messages.where((journal) => journal.date.isAfter(startOfTheDay) && journal.date.isBefore(endOfTheDay)).toList();
           return Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -103,7 +115,7 @@ class _JournalingPageState extends State<JournalingPage> {
                           order: GroupedListOrder.DESC,
                           useStickyGroupSeparators: true,
                           floatingHeader: true,
-                          elements: messages,
+                          elements: filteredMessages,
                           groupBy: (message) => DateTime(
                             message.date.day,
                             message.date.hour,

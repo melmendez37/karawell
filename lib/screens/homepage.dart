@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/badges/badges_page.dart';
+import 'package:myapp/screens/Journal/Journaling_pages.dart';
 import 'package:myapp/screens/Journal/journaling_page.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
@@ -383,7 +384,7 @@ class _HomepageState extends State<Homepage> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => JournalingPage()),
+                            MaterialPageRoute(builder: (context) => JournalingPages()),
                           );
                         },
 
@@ -429,7 +430,7 @@ class _HomepageState extends State<Homepage> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => JournalingPage()),
+                            MaterialPageRoute(builder: (context) => JournalingPages()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -474,7 +475,7 @@ class _HomepageState extends State<Homepage> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => JournalingPage()),
+                            MaterialPageRoute(builder: (context) => JournalingPages()),
                           );
                         },
 
@@ -564,7 +565,7 @@ class _HomepageState extends State<Homepage> {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => JournalingPage()),
+                        MaterialPageRoute(builder: (context) => JournalingPages()),
                       );
                     },
                   ),

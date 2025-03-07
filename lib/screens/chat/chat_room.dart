@@ -170,7 +170,7 @@ class _ChatRoomState extends State<ChatRoom> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  DateFormat("MMMM d,").add_jm() .format(message.currentTime),
+                                  DateFormat("MMMM d,").add_jm().format(message.currentTime),
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),

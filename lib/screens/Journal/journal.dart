@@ -23,6 +23,7 @@ class Journal{
     );
   }
 
+
   //session -> map
   Map<String, dynamic> toMap(){
     return {
