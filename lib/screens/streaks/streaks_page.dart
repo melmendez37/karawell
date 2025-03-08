@@ -143,7 +143,7 @@ class _StreaksPageState extends State<StreaksPage> {
                           crossAxisCount: 3,
                           children: List.generate(21, (index) {
                             bool isActive = index < streaks.counter;
-                            bool isMedal = index == 0 || index == 2 || index == 6 || index == 13 || index == 20;
+                            bool isMedal = index == 0 || index == 2 || index == 4 || index == 6 || index == 13 || index == 20;
 
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -161,7 +161,7 @@ class _StreaksPageState extends State<StreaksPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                          isMedal ? Icons.emoji_flags : Icons.sunny,
+                                          isMedal ? Icons.star : Icons.sunny,
                                           size: 35,
                                           color: isActive ? Colors.white : Colors.grey,
                                       ),
