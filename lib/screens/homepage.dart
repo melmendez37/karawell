@@ -441,7 +441,7 @@ class _HomepageState extends State<Homepage> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
-                                      'Journaling',
+                                      'My Journals',
                                       style: TextStyle(
                                         fontFamily: 'DM_Sans',
                                         fontSize: 18,
