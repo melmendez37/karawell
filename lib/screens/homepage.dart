@@ -1,11 +1,10 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/badges/badges_page.dart';
 import 'package:myapp/screens/Journal/Journaling_pages.dart';
 import 'package:myapp/screens/Journal/journaling_page.dart';
-import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:myapp/screens/profile/my_profile.dart';
 import 'package:myapp/screens/profile/profile_database.dart';
@@ -23,7 +22,11 @@ class Homepage extends StatefulWidget{
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
+  //add audio player
+  late AudioPlayer _audioPlayer = AudioPlayer();
+
+  //call notification service
   final NotificationService notificationService = NotificationService();
 
   //get auth service
@@ -45,6 +48,43 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState(){
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    _audioPlayer = AudioPlayer();
+    _audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        await _audioPlayer.play(AssetSource('homepage-audio.mp3'));
+        print('Audio started playing');
+      } catch (e) {
+        print('Error playing audio: $e');
+      }
+    });
+  }
+
+  @override
+  void dispose(){
+    WidgetsBinding.instance.removeObserver(this);
+    _audioPlayer.stop();
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state){
+    super.didChangeAppLifecycleState(state);
+    print('App lifecycle state: $state');
+    if (state == AppLifecycleState.paused) {
+      // App is in the background (home button pressed)
+      _audioPlayer.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      // App is in the foreground
+      _audioPlayer.resume();
+    } else if (state == AppLifecycleState.detached) {
+      // App is destroyed (back button pressed)
+      _audioPlayer.stop();
+    }
   }
 
   @override
