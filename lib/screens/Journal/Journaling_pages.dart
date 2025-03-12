@@ -26,13 +26,47 @@ class _JournalingPagesState extends State<JournalingPages> {
       appBar: AppBar(
         toolbarHeight: 90,
         backgroundColor: Color(0xffffffff),
-        title: Text(
-          'Journals',
-          style: TextStyle(
-            fontFamily: 'DM_Sans',
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Journals',
+              style: TextStyle(
+                fontFamily: 'DM_Sans',
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => JournalingPage(date: DateTime.now(),)),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xff057569),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.add_box_outlined,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 5,),
+                    Text(
+                      'Add',
+                      style: TextStyle(
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Colors.white
+                      ),
+                    )
+                  ],
+                )
+            )
+          ],
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -56,7 +90,7 @@ class _JournalingPagesState extends State<JournalingPages> {
             }
             final journals = snapShot.data!;
             if(journals.isEmpty){
-              return Text("still no journals, how bout try and put one");
+              return Text("No journals? Go to Home > Menu > Journaling for your first journal");
             }
             final headers = journalDatabase.makeHeaders(journals);
 
@@ -76,15 +110,20 @@ class _JournalingPagesState extends State<JournalingPages> {
 
                       ),
                       child: ListTile(
-                        title: Text("At $date", 
+                        title: Text("$date",
                         style: const TextStyle(
                             color: Colors.white,
                             fontFamily: "DM_Sans",
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
                         )),  // Text for the main title
-                        subtitle: Text("You wrote on the journal $count times", 
-                        style: const TextStyle(color: Colors.white)), // Text for the subtitle
-                        leading: Icon(Icons.padding, color: Colors.white,), // Icon for the leading position
+                        subtitle: Text("Wrote $count ${count == 1 ? "journal" : "journals"}",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: "DM_Sans",
+                            fontSize: 14,
+                        )), // Text for the subtitle
+                        leading: Icon(Icons.notes_outlined, color: Colors.white,), // Icon for the leading position
                         
                         onTap: () => {
                           Navigator.push(
