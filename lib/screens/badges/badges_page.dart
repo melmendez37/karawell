@@ -29,15 +29,74 @@ class _BadgesPageState extends State<BadgesPage> {
       appBar: AppBar(
         toolbarHeight: 90,
         backgroundColor: Color(0xfff2f2f2),
-        title: Text(
-          'Badges',
-          style: TextStyle(
-            fontFamily: 'DM_Sans',
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
+        title: StreamBuilder(
+            stream: badgesDatabase.userBadgeStream,
+            builder: (context, snapshot){
+
+              if(!snapshot.hasData){
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              var data = snapshot.data!;
+              var badge = data.where((badge) => badge.isUnlocked == true).length;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                Text(
+                  'Badges',
+                  style: TextStyle(
+                    fontFamily: 'DM_Sans',
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.black,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  '$badge',
+                                  style: TextStyle(
+                                    fontFamily: 'DM_Sans',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )
+
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+
+
+
+                ],
+              );
+
+            },
         ),
-        centerTitle: true,
+        centerTitle: false,
         automaticallyImplyLeading: true,
 
         shape: RoundedRectangleBorder(
