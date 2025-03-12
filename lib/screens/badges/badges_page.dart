@@ -101,43 +101,50 @@ class _BadgesPageState extends State<BadgesPage> {
 
                        final isUnlocked = userBadge.isUnlocked;
 
-                       return Container(
-                         padding: EdgeInsets.all(15),
-                         decoration: BoxDecoration(
-                           color: isUnlocked ? Colors.transparent : Colors.transparent,
-                           borderRadius: BorderRadius.circular(10),
-                         ),
-                         child: ListTile(
-                           leading: ColorFiltered(
-                             colorFilter: isUnlocked ? ColorFilter.mode(Colors.transparent, BlendMode.color)
-                                 : ColorFilter.mode(Colors.white, BlendMode.color),
-                             child: Image.network(
-                               badge.imageUrl,
-                               width: 100,
-                               height: 100,
-                             ),
-                           ),
-                           title: Text(
-                             badge.name,
-                             style: TextStyle(
-                                 color: Colors.black,
-                                 fontFamily: 'DM_Sans',
-                                 fontSize: 18,
-                                 fontWeight: FontWeight.bold
-                             ),
+                       return Padding(
+                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            child: Container(
+                              height: 100,
+                              //padding: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: isUnlocked ? Color(0XFFF2F2F2) : Color(0XFFF2F2F2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 20), // Adjust horizontal padding
+                                  leading: ColorFiltered(
+                                    colorFilter: isUnlocked ? ColorFilter.mode(Colors.transparent, BlendMode.dst)
+                                        : ColorFilter.mode(Colors.grey, BlendMode.saturation),
+                                    child: Image.network(
+                                      badge.imageUrl,
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    badge.name,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'DM_Sans',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
-                           ),
-                           subtitle: Text(
-                             isUnlocked ? "Unlocked" : "Locked",
-                             style: TextStyle(
-                                 fontFamily: 'DM_Sans',
-                                 fontSize: 16,
-                                 fontStyle: FontStyle.italic
-                             ),
-                           ),
-                           tileColor: isUnlocked ? Colors.transparent : Colors.white,
-                         ),
+                                  ),
+                                  subtitle: Text(
+                                    isUnlocked ? "Unlocked at ${badge.unlockAt}" : "Keep going to unlock at ${badge.unlockAt} days!",
+                                    style: TextStyle(
+                                        fontFamily: 'DM_Sans',
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.italic
+                                    ),
+                                  ),
+                                  tileColor: isUnlocked ? Colors.transparent : Colors.white,
+                                ),
+                              ),
 
+                            ),
                        );
 
                      }
