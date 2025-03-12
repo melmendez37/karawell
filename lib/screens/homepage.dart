@@ -242,7 +242,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        Icons.accessibility,
+                                        Icons.local_fire_department_rounded,
                                         color: Colors.black,
                                         size: 20,
                                       ),
@@ -287,7 +287,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        Icons.bakery_dining_sharp,
+                                        Icons.star,
                                         color: Colors.black,
                                         size: 20,
                                       ),
