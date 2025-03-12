@@ -107,7 +107,7 @@ class _BadgesPageState extends State<BadgesPage> {
                               height: 100,
                               //padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: isUnlocked ? Color(0XFFF2F2F2) : Color(0XFFF2F2F2),
+                                color: isUnlocked ? Color(0XFFF2F2F2) : Color(0XFFA0A0A0),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
@@ -125,7 +125,7 @@ class _BadgesPageState extends State<BadgesPage> {
                                   title: Text(
                                     badge.name,
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: isUnlocked ? Colors.black : Colors.white,
                                         fontFamily: 'DM_Sans',
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold
@@ -137,7 +137,8 @@ class _BadgesPageState extends State<BadgesPage> {
                                     style: TextStyle(
                                         fontFamily: 'DM_Sans',
                                         fontSize: 14,
-                                        fontStyle: FontStyle.italic
+                                        fontStyle: FontStyle.italic,
+                                        color: isUnlocked ? Colors.black : Colors.white,
                                     ),
                                   ),
                                   tileColor: isUnlocked ? Colors.transparent : Colors.white,
