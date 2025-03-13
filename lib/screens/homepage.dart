@@ -568,7 +568,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                       size: 30.0,
                     ),
                     title: const Text(
-                      'Journaling',
+                      'Add Journal',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
