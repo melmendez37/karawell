@@ -147,23 +147,25 @@ class _LoginPageState extends State<LoginScreen> {
                     onPressed: login,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 130,
-                            vertical: 10
-                        ),
+                        minimumSize: Size(200, 40),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
                         )
                     ),
 
-                    child: Text(
-                      'Log In',
-                      style: TextStyle(
-                        fontFamily: 'DM_Sans',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Log In',
+                          style: TextStyle(
+                            fontFamily: 'DM_Sans',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal,
+                          ),
+                        )
+                      ],
                     )
                 ),
 

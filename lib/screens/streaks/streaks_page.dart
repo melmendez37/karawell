@@ -151,7 +151,7 @@ class _StreaksPageState extends State<StreaksPage> {
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                     vertical: 10,
-                                    horizontal: 25
+                                    horizontal: 20
                                   ),
                                   decoration: BoxDecoration(
                                     color: isActive ? Colors.green : Colors.white,
@@ -162,7 +162,7 @@ class _StreaksPageState extends State<StreaksPage> {
                                     children: [
                                       Icon(
                                           isMedal ? Icons.star : Icons.sunny,
-                                          size: 35,
+                                          size: 30,
                                           color: isActive ? Colors.white : Colors.grey,
                                       ),
                                       SizedBox(height: 5,),
@@ -173,7 +173,7 @@ class _StreaksPageState extends State<StreaksPage> {
                                             'Day ${index + 1}',
                                             style: TextStyle(
                                               fontFamily: 'DM_Sans',
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                               color: isActive ? Colors.white : Colors.grey,
                                             ),
