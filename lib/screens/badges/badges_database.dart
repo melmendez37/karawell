@@ -81,8 +81,8 @@ class BadgesDatabase {
       }).inFilter('badge_id', userBadgeIds);
 
       await NotificationService().showNotification(
-        title: "New Badge",
-        body: "You just received a new badge!"
+        title: "New Badge 📣",
+        body: "You just received a new badge! 🌟"
       );
     }
   }

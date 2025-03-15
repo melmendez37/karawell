@@ -105,8 +105,8 @@ class _ChatRoomState extends State<ChatRoom> {
 
         //update user of their streak count
         await NotificationService().showNotification(
-          title: "Congratulations!",
-          body: "You reached $counter days using KaraWell! Keep it up!",
+          title: "Congratulations! 🚀",
+          body: "You reached $counter days using KaraWell! Keep it up! ",
         );
       }
     }

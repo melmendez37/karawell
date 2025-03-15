@@ -25,6 +25,7 @@ class Homepage extends StatefulWidget{
 class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   //add audio player
   late AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isMuted = false;
 
   //call notification service
   final NotificationService notificationService = NotificationService();
@@ -86,6 +87,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
       // App is destroyed (back button pressed)
       _audioPlayer.stop();
     }
+  }
+
+  void toggleMute() async {
+    setState(() {
+      _isMuted = !_isMuted;
+    });
+
+    await _audioPlayer.setVolume(_isMuted ? 0.0 : 1.0);
   }
 
   @override
@@ -657,6 +666,26 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                   ),
 
                   SizedBox(height: 10),
+
+                  ListTile(
+                    onTap: toggleMute,
+                    leading: Icon(
+                      _isMuted ? Icons.volume_off : Icons.volume_up,
+                      color: Colors.black,
+                      size: 26,
+                    ),
+                    title: Text(_isMuted ? "Volume Off" : "Volume On",
+                      style: TextStyle(
+                          fontFamily: "DM_Sans",
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold
+
+                      ),),
+                  ),
+
+                  Spacer(),
+                  Divider(),
 
                   ListTile(
                     leading: Icon(

@@ -27,17 +27,22 @@ void main() async {
   runApp(const MyApp());
 
   Future.delayed(Duration(seconds: 1), () async {
-    await notificationService.showNotification(
-        title: "Welcome back!",
-        body: "We welcome you again."
-    );
+    //check if user is authenticated
+    final user = Supabase.instance.client.auth.currentUser;
 
-    await notificationService.scheduleNotification(
-      title: "Daily Update",
-      body: "Good day! Don't forget to check in!",
-      hour: 20,
-      minute: 0,
-    );
+    if(user != null){
+      await notificationService.showNotification(
+          title: "Welcome back! 👋",
+          body: "We welcome you again. ✨"
+      );
+
+      await notificationService.scheduleNotification(
+        title: "Daily Update 🔔",
+        body: "Good day! Don't forget to check in! 👋",
+        hour: 20,
+        minute: 0,
+      );
+    }
   });
 
   DependencyInjection.init();
