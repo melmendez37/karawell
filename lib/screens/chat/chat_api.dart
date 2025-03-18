@@ -6,7 +6,6 @@ class ChatApi {
 
  Future<String> createCompletion(String message) async {
   
-  /* This is for using chatcompletion
   // the system message that will be sent to the request.
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
@@ -14,7 +13,7 @@ class ChatApi {
         "You are a helpful, respectful and honest assistant. If the user is feeling stressed be there to help them. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature. If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.",
       ),
     ],
-    role: OpenAIChatMessageRole.assistant,
+    role: OpenAIChatMessageRole.system,
   );
 
     // the user message that will be sent to the request.
@@ -29,20 +28,21 @@ class ChatApi {
 
     // all messages to be sent.
   final requestMessages = [
-  //  systemMessage,
+    systemMessage,
     userMessage,
   ];
-  */
-  OpenAICompletionModel completion = await OpenAI.instance.completion.create(
+ 
+  OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
   model: chatModel,
-  prompt: message,
+  messages: requestMessages,
   maxTokens: 512,
-  temperature: 0.3,
-  stop: ["\n"]
+  temperature: 0.5,
+  stop: ["<|im_end|>"]
 );
-final content = completion.choices[0].text;
-if (content.isNotEmpty){
-    return content;
+final contentAI = completion.choices.first.message.content;
+if (contentAI != null && contentAI.first.text!.isNotEmpty){
+  print(contentAI);
+    return contentAI.first.text!;
 }
 else {
   return "Sorry, failed to get Chatbot message";
