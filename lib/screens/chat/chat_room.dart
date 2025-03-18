@@ -7,7 +7,6 @@ import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:myapp/screens/Messages/message.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 class ChatRoom extends StatefulWidget{
   const ChatRoom({super.key});
