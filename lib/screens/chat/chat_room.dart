@@ -203,12 +203,13 @@ class _ChatRoomState extends State<ChatRoom> {
                                 itemCount: messages.length,
                                 itemBuilder: (BuildContext context, int index) {
                               return Align(
-                                alignment: messages[index].byUser ? Alignment.centerLeft : Alignment.centerRight,
+                                alignment: messages[index].byUser ? Alignment.centerRight : Alignment.centerLeft,
                                 child: Card(
                                 elevation: 8,
+                                  color: messages[index].byUser ? Colors.white : Colors.white30,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
-                                  child: Text(messages[index].message),
+                                  child: Text(messages[index].message, style: TextStyle(color: messages[index].byUser ? Colors.black : Colors.white),),
                                   ),
                               ) 
                               );
@@ -218,10 +219,13 @@ class _ChatRoomState extends State<ChatRoom> {
                     ),
                         if(_requesting)
                         const Align(
-                          alignment: Alignment.centerRight,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                              padding: EdgeInsets.all(30),
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                          ),
                           ),
                     Container(
                       decoration: BoxDecoration(
