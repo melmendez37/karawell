@@ -73,7 +73,6 @@ class _JournalingPageState extends State<JournalingPage> {
         ),
       ),
 
-
         body: StreamBuilder(
           
           //listens to this stream
@@ -83,7 +82,9 @@ class _JournalingPageState extends State<JournalingPage> {
 
             //loading
             if(!snapshot.hasData){
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(
+                color: Colors.white,
+              ));
             }
             // loaded!
             final messages = snapshot.data!;

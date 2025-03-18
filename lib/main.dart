@@ -7,6 +7,7 @@ import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:get/get.dart';
+import 'package:dart_openai/dart_openai.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,13 +20,16 @@ void main() async {
       url: dotenv.env['SUPABASE_URL'] ?? '',
       anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
   );
+  final endpoint = dotenv.env["RUNPOD_ENDPOINT_ID"] ?? "";
+
+  OpenAI.apiKey = dotenv.env["RUNPOD_API_KEY"] ?? "";
+  OpenAI.baseUrl = "https://api.runpod.ai/v2/$endpoint/openai";
 
   tz.initializeTimeZones();
   final notificationService = NotificationService();
   await notificationService.initNotification(); // Initialize notifications
 
   runApp(const MyApp());
-
   Future.delayed(Duration(seconds: 1), () async {
     await notificationService.showNotification(
         title: "Welcome back!",
@@ -135,6 +139,3 @@ class Home extends StatelessWidget {
     );
   }
 }
-
-
-

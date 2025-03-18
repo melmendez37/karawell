@@ -1,12 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
-import 'package:intl/intl.dart';
+import 'package:myapp/screens/chat/chat_api.dart';
 import 'package:myapp/screens/chat/chat_session_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/notifications/notification_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:myapp/screens/Messages/message.dart';
-import 'package:grouped_list/grouped_list.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class ChatRoom extends StatefulWidget{
   const ChatRoom({super.key});
@@ -15,10 +16,9 @@ class ChatRoom extends StatefulWidget{
   State<ChatRoom> createState() => _ChatRoomState();
 }
 
-
 class _ChatRoomState extends State<ChatRoom> {
   final supabase = Supabase.instance.client;
-
+  final chat = ChatApi();
   final stopwatch = Stopwatch();
   final chatSessionDatabase = ChatSessionDatabase();
   final streakDatabase = StreaksDatabase();
@@ -26,13 +26,22 @@ class _ChatRoomState extends State<ChatRoom> {
 
   final _messageController = TextEditingController();
   bool _isMessageSentToday = false;
-  List<Message> messages = [
-    Message(message: "Hello there, it is nice to listen to you today", byUser: false, currentTime: DateTime.now())
-  ];
+
+  final StreamController<List<Message>> _streamController = StreamController<List<Message>>();
+  final List<Message> _messages = [];
+  bool _requesting = false;
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    _messages.add(Message(message: "Hi, it is nice to see you here today", byUser: false));
+    _streamController.sink.add(_messages);
     isNewDay();
   }
 
@@ -66,6 +75,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void sendMessage() async{
     final message = _messageController.text.trim();
+    _messageController.clear();
     if(message.isNotEmpty){
       if(!_isMessageSentToday){
         //update user streaks after sending message per day
@@ -79,11 +89,17 @@ class _ChatRoomState extends State<ChatRoom> {
       if(!stopwatch.isRunning){
         await chatSessionDatabase.startChatSession();
       }
-      setState(() {
-        messages.add(Message(message: message, byUser: true, currentTime: DateTime.now()));
+        setState(() {
+            _messages.add(Message(message: message, byUser: true));
+            _streamController.sink.add(_messages);
+            _requesting = true;
       });
+      final botMessage = await chat.createCompletion(message);
+        setState(() {
+          _requesting = false;
+          _messages.add(Message(message: botMessage, byUser: false));
+        });
 
-      _messageController.clear();
     }
   }
 
@@ -149,122 +165,121 @@ class _ChatRoomState extends State<ChatRoom> {
         ),
       ),
 
+         body: StreamBuilder(
+            //listens to this stream
+            stream: _streamController.stream,
+            //UI builder
+            builder:  (context, snapshot) {
+              //loading
+              if(!snapshot.hasData){
+                return const Center(
+                    child: CircularProgressIndicator(
+                    color: Colors.white,
+                    )
+                  );
+              }
+              // loaded!
+              final messages = snapshot.data!;
 
-        body: Container(
-          color: Color(0xff027373),
-          child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: GroupedListView<Message, DateTime>(
-                        padding: const EdgeInsets.all(8),
-                        reverse: true,
-                        order: GroupedListOrder.DESC,
-                        useStickyGroupSeparators: true,
-                        floatingHeader: true,
-                        elements: messages,
-                        groupBy: (message) => DateTime(
-                          message.currentTime.day,
-                          message.currentTime.hour,
-                          message.currentTime.minute,
-                        ),
-                        groupHeaderBuilder: (Message message) => SizedBox(
-                          height: 40,
-                          child: Center(
-                            child: Card(
-                              color: Theme.of(context).highlightColor,
-                              child: Padding(
+         return Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Color(0xff027373),
+            child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: 
+                            ListView.builder(
                                 padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  DateFormat("MMMM d,").add_jm().format(message.currentTime),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "DM_Sans",
+                                itemCount: messages.length,
+                                itemBuilder: (BuildContext context, int index) {
+                              return Align(
+                                alignment: messages[index].byUser ? Alignment.centerLeft : Alignment.centerRight,
+                                child: Card(
+                                elevation: 8,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(messages[index].message),
+                                  ),
+                              ) 
+                              );
+                            }
+                            )
+
+                    ),
+                        if(_requesting)
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                          ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              style: TextStyle(
+                              color: Colors.white,
+                              ),
+                              controller: _messageController,
+                              decoration: InputDecoration(
+                                hintText: 'Type a message...',
+                                hintStyle: TextStyle(
+                                  color: Color(0xFFF2F2F2),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFF2F2F2),
+                                    width: 2,
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        itemBuilder: (context, Message message) => Align(
-                          alignment: message.byUser 
-                          ? Alignment.centerLeft
-                          : Alignment.centerRight,
-                          child: Card(
-                          elevation: 8,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(message.message, style: const TextStyle(
-                              fontFamily: "DM_Sans"
-                            ),),
-                            ),
-                        ),
-                        ),
-                      )
-                  ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFF2F2F2),
+                                    width: 2,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFF2F2F2),
+                                    width: 2,
+                                  ),
+                                ),
 
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            style: TextStyle(
-                            color: Colors.white,
-                            ),
-                            controller: _messageController,
-                            decoration: InputDecoration(
-                              hintText: 'Type a message...',
-                              hintStyle: TextStyle(
-                                color: Color(0xFFF2F2F2),
-                                fontFamily: "DM_Sans"
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: Color(0xFFF2F2F2),
-                                  width: 2,
-                                ),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: Color(0xFFF2F2F2),
-                                  width: 2,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: Color(0xFFF2F2F2),
-                                  width: 2,
-                                ),
-                              ),
-
                             ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: sendMessage,
-                          icon: Icon(
-                              Icons.send,
-                              color: Color(0xFFF2F2F2)
-                          ),
-                        )
-                      ],
+                          IconButton(
+                            onPressed: sendMessage,
+                            icon: Icon(
+                                Icons.send,
+                                color: Color(0xFFF2F2F2)
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-          ),
-      ),
-    );
+                  ],
+                )
+            ),
+        );
+      }
+    )
+  );
+}                        
   }
-}
+
+ 
 
 
 
