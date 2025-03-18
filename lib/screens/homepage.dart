@@ -25,6 +25,7 @@ class Homepage extends StatefulWidget{
 class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   //add audio player
   late AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isMuted = false;
 
   //call notification service
   final NotificationService notificationService = NotificationService();
@@ -55,6 +56,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
+        await _audioPlayer.setVolume(1.0);
         await _audioPlayer.play(AssetSource('homepage-audio.mp3'));
         print('Audio started playing');
       } catch (e) {
@@ -85,6 +87,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
       // App is destroyed (back button pressed)
       _audioPlayer.stop();
     }
+  }
+
+  void toggleMute() async {
+    setState(() {
+      _isMuted = !_isMuted;
+    });
+
+    await _audioPlayer.setVolume(_isMuted ? 0.0 : 1.0);
   }
 
   @override
@@ -251,7 +261,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                                         'Daily Streaks',
                                         style: TextStyle(
                                           fontFamily: 'DM_Sans',
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -296,7 +306,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                                         'Badges',
                                         style: TextStyle(
                                           fontFamily: 'DM_Sans',
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -361,7 +371,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                               'Start new conversation',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xfff2f2f2),
                               ),
@@ -407,7 +417,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                               'Check your progress',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xfff2f2f2),
                               ),
@@ -436,7 +446,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                       SizedBox(height: 10),
 
                       SizedBox(
-                          height: 250,
+                          height: 150,
                           child: ElevatedButton(
                             onPressed: ()  {
                               Navigator.push(
@@ -565,14 +575,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                     leading: Icon(
                       Icons.book,
                       color: Colors.black,
-                      size: 30.0,
+                      size: 26.0,
                     ),
                     title: const Text(
-                      'Journaling',
+                      'Add Journal',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
-                          fontSize: 18.0
+                          fontSize: 16.0
                       ),
                     ),
                     onTap: (){
@@ -589,14 +599,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                     leading: Icon(
                       Icons.local_fire_department,
                       color: Colors.black,
-                      size: 30.0,
+                      size: 26.0,
                     ),
                     title: const Text(
                       'Daily Streaks',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
-                          fontSize: 18.0
+                          fontSize: 16.0
                       ),
                     ),
                     onTap: (){
@@ -613,14 +623,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                     leading: Icon(
                       Icons.star,
                       color: Colors.black,
-                      size: 30.0,
+                      size: 26.0,
                     ),
                     title: const Text(
                       'Badges',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
-                          fontSize: 18.0
+                          fontSize: 16.0
                       ),
                     ),
                     onTap: (){
@@ -637,14 +647,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                     leading: Icon(
                       Icons.person,
                       color: Colors.black,
-                      size: 30.0,
+                      size: 26.0,
                     ),
                     title: const Text(
                       'My Profile',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'DM_Sans',
-                          fontSize: 18.0
+                          fontSize: 16.0
                       ),
                     ),
                     onTap: (){
@@ -658,10 +668,30 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                   SizedBox(height: 10),
 
                   ListTile(
+                    onTap: toggleMute,
+                    leading: Icon(
+                      _isMuted ? Icons.volume_off : Icons.volume_up,
+                      color: Colors.black,
+                      size: 26,
+                    ),
+                    title: Text(_isMuted ? "Volume Off" : "Volume On",
+                      style: TextStyle(
+                          fontFamily: "DM_Sans",
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold
+
+                      ),),
+                  ),
+
+                  Spacer(),
+                  Divider(),
+
+                  ListTile(
                     leading: Icon(
                       Icons.logout,
                       color: Color(0xFFFF3D00),
-                      size: 30.0,
+                      size: 26.0,
                     ),
                     title: const Text(
                       'Log Out',
@@ -669,7 +699,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFFF3D00),
                           fontFamily: 'DM_Sans',
-                          fontSize: 18.0
+                          fontSize: 16.0
                       ),
                     ),
                     onTap: logout,

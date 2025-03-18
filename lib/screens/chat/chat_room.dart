@@ -119,11 +119,19 @@ class _ChatRoomState extends State<ChatRoom> {
         final counter = response['counter'];
         await badgesDatabase.updateBadgeStatus(counter, userId);
 
-        //update user of their streak count
-        await NotificationService().showNotification(
-          title: "Congratulations!",
-          body: "You reached $counter days using KaraWell! Keep it up!",
-        );
+        //check if streak counter matches badge requirement
+        if([3,5,7,14,21].contains(counter)){
+          await NotificationService().showNotification(
+              title: "New Badge 📣",
+              body: "You just received a new badge! 🌟"
+          );
+        } else {
+          //update user of their streak count
+          await NotificationService().showNotification(
+            title: "Streak updated - Keep it up! 🚀",
+            body: "You reached $counter days using KaraWell!",
+          );
+        }
       }
     }
   }

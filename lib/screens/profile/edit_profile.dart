@@ -13,6 +13,7 @@ class EditProfile extends StatefulWidget{
 
 class _EditProfileState extends State<EditProfile> {
   //work on keeping old values if some fields are not edited
+  final _formKey = GlobalKey<FormState>();
 
   //profile db
   final profileDatabase = ProfileDatabase();
@@ -67,6 +68,14 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
+  void submitForm(){
+    if(_formKey.currentState!.validate()){
+      print('Form submitted successfully');
+    } else {
+      print('Form change failed');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentEmail = authService.getCurrentUserEmail();
@@ -105,155 +114,188 @@ class _EditProfileState extends State<EditProfile> {
             }
 
             final profile = snapshot.data!.first;
+            _usernameController.text = profile.username!;
+            _mobileNumberController.text = profile.phone!;
+            _taglineController.text = profile.tagline!;
+
 
             return Padding(
               padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Enter new username',
-                      filled: true,
-                      fillColor: Colors.white,
-
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
-                        ),
-                        borderSide: BorderSide(
-                          color: Color(0xFFCBD5E1),
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(6)
-                          ),
-                          borderSide: BorderSide(
-                            color: Color(0xFFCBD5E1),
-                            width: 1.0,
-                          )
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'DM_Sans',
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF606060),
-                        fontFamily: 'DM_Sans',
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: _taglineController,
-                    decoration: const InputDecoration(
-                      labelText: 'Tagline',
-                      hintText: 'What is your life motto?',
-                      filled: true,
-                      fillColor: Colors.white,
-
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
-                        ),
-                        borderSide: BorderSide(
-                          color: Color(0xFFCBD5E1),
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(6)
-                          ),
-                          borderSide: BorderSide(
-                            color: Color(0xFFCBD5E1),
-                            width: 1.0,
-                          )
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'DM_Sans',
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF606060),
-                        fontFamily: 'DM_Sans',
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: _mobileNumberController,
-                    maxLength: 13,
-                    decoration: const InputDecoration(
-                      labelText: 'Mobile number',
-                      prefixText: '+63',
-                      filled: true,
-                      fillColor: Colors.white,
-
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
-                        ),
-                        borderSide: BorderSide(
-                          color: Color(0xFFCBD5E1),
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(6)
-                          ),
-                          borderSide: BorderSide(
-                            color: Color(0xFFCBD5E1),
-                            width: 1.0,
-                          )
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'DM_Sans',
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF606060),
-                        fontFamily: 'DM_Sans',
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Form(
+                key: _formKey,
+                  child: Column(
                     children: [
-                      SizedBox.fromSize(),
+                      TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                          hintText: 'Enter new username',
+                          filled: true,
+                          fillColor: Colors.white,
 
-                      ElevatedButton(
-                          onPressed: () => changeProfile(profile),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff027373),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
+                            ),
+                            borderSide: BorderSide(
+                              color: Color(0xFFCBD5E1),
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(6)
+                              ),
+                              borderSide: BorderSide(
+                                color: Color(0xFFCBD5E1),
+                                width: 1.0,
                               )
                           ),
-                          child: Text(
-                            'Save changes',
-                            style: TextStyle(
-                                fontFamily: 'DM_Sans',
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFF2F2F2)
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'DM_Sans',
+                          ),
+                          hintStyle: TextStyle(
+                            color: Color(0xFF606060),
+                            fontFamily: 'DM_Sans',
+                          ),
+                        ),
+                        validator: (value){
+                          if(value == null || value.isEmpty){
+                            return 'Please input a username';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: 20),
+
+                      TextFormField(
+                        controller: _taglineController,
+                        decoration: const InputDecoration(
+                          labelText: 'Tagline',
+                          hintText: 'What is your life motto?',
+                          filled: true,
+                          fillColor: Colors.white,
+
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
                             ),
+                            borderSide: BorderSide(
+                              color: Color(0xFFCBD5E1),
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(6)
+                              ),
+                              borderSide: BorderSide(
+                                color: Color(0xFFCBD5E1),
+                                width: 1.0,
+                              )
+                          ),
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'DM_Sans',
+                          ),
+                          hintStyle: TextStyle(
+                            color: Color(0xFF606060),
+                            fontFamily: 'DM_Sans',
+                          ),
+                        ),
+
+                        validator: (value){
+                          if(value == null || value.isEmpty){
+                            return 'Please input a tagline';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: 20),
+
+                      TextFormField(
+                        controller: _mobileNumberController,
+                        maxLength: 10,
+                        decoration: const InputDecoration(
+                          labelText: 'Mobile number',
+                          prefixText: '+63',
+                          filled: true,
+                          fillColor: Colors.white,
+
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
+                            ),
+                            borderSide: BorderSide(
+                              color: Color(0xFFCBD5E1),
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(6)
+                              ),
+                              borderSide: BorderSide(
+                                color: Color(0xFFCBD5E1),
+                                width: 1.0,
+                              )
+                          ),
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'DM_Sans',
+                          ),
+                          hintStyle: TextStyle(
+                            color: Color(0xFF606060),
+                            fontFamily: 'DM_Sans',
+                          ),
+                        ),
+
+                        validator: (value){
+                          if(value == null || value.isEmpty){
+                            return 'Please input mobile number';
+                          } else if (value.length != 10){
+                            return 'Mobile number must be 10 digits';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: 20),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox.fromSize(),
+
+                          ElevatedButton(
+                              onPressed: () {
+                                if(_formKey.currentState!.validate()){
+                                  changeProfile(profile);
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xff027373),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )
+                              ),
+                              child: Text(
+                                'Save changes',
+                                style: TextStyle(
+                                    fontFamily: 'DM_Sans',
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFF2F2F2)
+                                ),
+                              )
                           )
+                        ],
                       )
                     ],
-                  )
-                ],
-              ),
+                  ),
+              )
             );
           }
       )

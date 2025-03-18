@@ -200,10 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: signUp,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 120,
-                            vertical: 10
-                        ),
+                        minimumSize: Size(200, 40),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
                         )
