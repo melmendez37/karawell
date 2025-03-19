@@ -87,6 +87,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
       if(!stopwatch.isRunning){
         await chatSessionDatabase.startChatSession();
+        stopwatch.start();
       }
         setState(() {
             _messages.add(Message(message: message, byUser: true));
