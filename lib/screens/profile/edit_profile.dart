@@ -29,9 +29,12 @@ class _EditProfileState extends State<EditProfile> {
   void changeProfile (Profile profile) async {
     Profile updatedProfile = Profile(
       id: profile.id,
-      username: _usernameController.text,
-      tagline: _taglineController.text,
-      phone: _mobileNumberController.text,
+      username: _usernameController.text.isNotEmpty ?
+        _usernameController.text : profile.username,
+      tagline: _taglineController.text.isNotEmpty ?
+        _taglineController.text : profile.tagline,
+      phone: _mobileNumberController.text.isNotEmpty ?
+        _mobileNumberController.text : profile.phone,
     );
 
     try {
@@ -57,15 +60,17 @@ class _EditProfileState extends State<EditProfile> {
     _getInitialProfile();
   }
 
+  @override
+  void dispose(){
+    _usernameController.dispose();
+    _taglineController.dispose();
+    _mobileNumberController.dispose();
+    super.dispose();
+  }
+
   Future<void> _getInitialProfile() async {
     final id = supabase.auth.currentUser!.id;
     final data = await supabase.from('profile').select().eq('id', id).single();
-
-    setState(() {
-      _usernameController.text = data['username'];
-      _taglineController.text = data['tagline'];
-      _mobileNumberController.text = data['phone'];
-    });
   }
 
   void submitForm(){
@@ -114,9 +119,6 @@ class _EditProfileState extends State<EditProfile> {
             }
 
             final profile = snapshot.data!.first;
-            _usernameController.text = profile.username!;
-            _mobileNumberController.text = profile.phone!;
-            _taglineController.text = profile.tagline!;
 
 
             return Padding(
@@ -126,7 +128,7 @@ class _EditProfileState extends State<EditProfile> {
                   child: Column(
                     children: [
                       TextFormField(
-                        controller: _usernameController,
+                        controller: _usernameController..text = profile.username ?? '',
                         decoration: const InputDecoration(
                           labelText: 'Username',
                           hintText: 'Enter new username',
@@ -171,7 +173,7 @@ class _EditProfileState extends State<EditProfile> {
                       SizedBox(height: 20),
 
                       TextFormField(
-                        controller: _taglineController,
+                        controller: _taglineController..text = profile.tagline ?? '',
                         decoration: const InputDecoration(
                           labelText: 'Tagline',
                           hintText: 'What is your life motto?',
@@ -217,7 +219,7 @@ class _EditProfileState extends State<EditProfile> {
                       SizedBox(height: 20),
 
                       TextFormField(
-                        controller: _mobileNumberController,
+                        controller: _mobileNumberController..text = profile.phone ?? '',
                         maxLength: 10,
                         decoration: const InputDecoration(
                           labelText: 'Mobile number',
