@@ -73,7 +73,51 @@ class _ProfilePictureState extends State<ProfilePicture>{
 
             //image preview
             _imageFile != null ? Image.file(_imageFile!) :
-            const Text('No picture added..'),
+            const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.search_off_outlined,
+                        size: 40,
+                      ),
+                      SizedBox(width:10),
+                      Text(
+                        "No image yet?",
+                        style: TextStyle(
+                            fontFamily: "DM_Sans",
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+
+                  Text(
+                    "1) Click 'Choose Image' to select photo",
+                    style: TextStyle(
+                        fontFamily: "DM_Sans",
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+
+                  Text(
+                    "2) Click 'Upload' to upload",
+                    style: TextStyle(
+                        fontFamily: "DM_Sans",
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
            SizedBox(height: 35),
 
@@ -103,7 +147,7 @@ class _ProfilePictureState extends State<ProfilePicture>{
                ElevatedButton(
                    onPressed: uploadImage,
                    style: ElevatedButton.styleFrom(
-                       backgroundColor: Color(0xff027373),
+                       backgroundColor: Color(0xff3d3d3d),
                        shape: RoundedRectangleBorder(
                          borderRadius: BorderRadius.circular(10),
                        )

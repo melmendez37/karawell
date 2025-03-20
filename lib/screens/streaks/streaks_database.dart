@@ -47,14 +47,13 @@ class StreaksDatabase {
           if(daysDiff == 1){
             //increment the counter if within one day has passed
             counter = response['counter'] + 1;
-          } else {
+          } else if (daysDiff > 1) {
             //dont add counter if more than one day has passed
             counter = 1;
           }
         }
-
         //update longest streak if current counter < itself
-        longestStreak = response['longest_streak'];
+        //longestStreak = response['longest_streak'];
         if(counter > longestStreak){
           longestStreak = counter;
         }

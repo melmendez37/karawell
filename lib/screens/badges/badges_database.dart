@@ -52,13 +52,22 @@ class BadgesDatabase {
           .select('id')
           .eq('unlock_at', 1)
           .maybeSingle();
-      
-      await database.from('user_badges').update({
-        'is_unlocked': false
-      }).eq('user_id', userId).neq('badge_id', oneDayBadge?['id']);
 
-      print("All badges are reset except one day streak");
-      return;
+      if(oneDayBadge != null){
+        // Unlock the "one day streak" badge for the user
+        await database.from('user_badges').upsert({
+          'user_id': userId,
+          'badge_id': oneDayBadge['id'],
+          'is_unlocked': true,
+        });
+
+        await database.from('user_badges').update({
+          'is_unlocked': false
+        }).eq('user_id', userId).neq('badge_id', oneDayBadge?['id']);
+
+        print("All badges are reset except one day streak");
+        return;
+      }
     }
 
     if (badgeIds.isEmpty) return;
