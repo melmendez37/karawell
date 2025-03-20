@@ -684,8 +684,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                       ),),
                   ),
 
-                  Spacer(),
-                  Divider(),
+                  SizedBox(height: 10),
 
                   ListTile(
                     leading: Icon(
