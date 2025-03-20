@@ -90,7 +90,42 @@ class _JournalingPagesState extends State<JournalingPages> {
             }
             final journals = snapShot.data!;
             if(journals.isEmpty){
-              return Text("No journals? Go to Home > Menu > Journaling for your first journal");
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off_outlined,
+                          size: 40,
+                        ),
+                        SizedBox(width:10),
+                        Text(
+                          "No journals?",
+                          style: TextStyle(
+                              fontFamily: "DM_Sans",
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+
+                    Text(
+                      "Tap the Add button to begin!",
+                      style: TextStyle(
+                          fontFamily: "DM_Sans",
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
             final headers = journalDatabase.makeHeaders(journals);
 
