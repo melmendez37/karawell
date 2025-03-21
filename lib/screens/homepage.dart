@@ -573,6 +573,30 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
 
                   ListTile(
                     leading: Icon(
+                      Icons.person,
+                      color: Colors.black,
+                      size: 26.0,
+                    ),
+                    title: const Text(
+                      'My Profile',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DM_Sans',
+                          fontSize: 16.0
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyProfile()),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 10),
+
+                  ListTile(
+                    leading: Icon(
                       Icons.book,
                       color: Colors.black,
                       size: 26.0,
@@ -637,30 +661,6 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => BadgesPage()),
-                      );
-                    },
-                  ),
-
-                  SizedBox(height: 10),
-
-                  ListTile(
-                    leading: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 26.0,
-                    ),
-                    title: const Text(
-                      'My Profile',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'DM_Sans',
-                          fontSize: 16.0
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyProfile()),
                       );
                     },
                   ),
