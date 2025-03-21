@@ -368,7 +368,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                             SizedBox(width: 8),
 
                             Text(
-                              'Start new conversation',
+                              'Talk to our AI assistant',
                               style: TextStyle(
                                 fontFamily: 'DM_Sans',
                                 fontSize: 16,
