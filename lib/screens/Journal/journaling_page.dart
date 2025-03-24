@@ -138,7 +138,11 @@ class _JournalingPageState extends State<JournalingPage> {
                             elevation: 8,
                             child: Padding(
                               padding: const EdgeInsets.all(8),
-                              child: Text(message.message),
+                              child: Text(message.message,
+                                style: TextStyle(
+                                  fontFamily: "DM_Sans",
+                                  fontSize: 16,
+                                ),),
                               ),
                           ),
                           ),
@@ -154,32 +158,35 @@ class _JournalingPageState extends State<JournalingPage> {
                       child: Row(
                         children: [
                           Expanded(
+                            flex: 3,
                             child: TextField(
                               style: TextStyle(
                               color: Colors.white,
                               ),
                               controller: _messageController,
                               decoration: InputDecoration(
-                                hintText: 'Type a message...',
+                                hintText: "What's on your mind...",
                                 hintStyle: TextStyle(
                                   color: Color(0xFFF2F2F2),
+                                  fontFamily: "DM_Sans",
+                                  fontSize: 16,
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
                                   borderSide: BorderSide(
                                     color: Color(0xFFF2F2F2),
                                     width: 2,
                                   ),
                                 ),
                                 disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
                                   borderSide: BorderSide(
                                     color: Color(0xFFF2F2F2),
                                     width: 2,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
                                   borderSide: BorderSide(
                                     color: Color(0xFFF2F2F2),
                                     width: 2,
@@ -189,11 +196,37 @@ class _JournalingPageState extends State<JournalingPage> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            onPressed: sendMessage,
-                            icon: Icon(
-                                Icons.send,
-                                color: Color(0xFFF2F2F2)
+
+                          SizedBox(
+                            child: ElevatedButton(
+                              onPressed: sendMessage,
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
+                                )
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add_box_outlined,
+                                    color: Color(0xff027373),
+                                    size: 20,
+                                  ),
+
+                                  SizedBox(width: 5,),
+
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Color(0xff027373),
+                                      fontFamily: "DM_Sans",
+                                      fontSize:16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           )
                         ],

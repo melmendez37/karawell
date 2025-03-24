@@ -39,7 +39,10 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     super.initState();
-    _messages.add(Message(message: "Hi, it is nice to see you here today", byUser: false));
+    _messages.add(Message(
+        message: "Hi, it is nice to see you here today",
+        byUser: false,
+    ));
     _streamController.sink.add(_messages);
     isNewDay();
   }
@@ -210,7 +213,12 @@ class _ChatRoomState extends State<ChatRoom> {
                                   color: messages[index].byUser ? Colors.white : Colors.white30,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
-                                  child: Text(messages[index].message, style: TextStyle(color: messages[index].byUser ? Colors.black : Colors.white),),
+                                  child: Text(messages[index].message,
+                                    style: TextStyle(
+                                      color: messages[index].byUser ? Colors.black : Colors.white,
+                                      fontFamily: "DM_Sans",
+                                      fontSize: 16,
+                                    ),),
                                   ),
                               ) 
                               );
@@ -245,6 +253,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                 hintText: 'Type a message...',
                                 hintStyle: TextStyle(
                                   color: Color(0xFFF2F2F2),
+                                  fontFamily: "DM_Sans",
+                                  fontSize: 16,
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
