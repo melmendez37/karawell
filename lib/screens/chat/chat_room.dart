@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/chat/chat_api.dart';
+import 'package:myapp/screens/chat/chat_database.dart';
 import 'package:myapp/screens/chat/chat_session_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/notifications/notification_service.dart';
@@ -20,29 +21,24 @@ class _ChatRoomState extends State<ChatRoom> {
   final chat = ChatApi();
   final stopwatch = Stopwatch();
   final chatSessionDatabase = ChatSessionDatabase();
+  String session = "";
+  final chatDatabase = MessageDatabase();
   final streakDatabase = StreaksDatabase();
   final badgesDatabase = BadgesDatabase();
 
   final _messageController = TextEditingController();
   bool _isMessageSentToday = false;
 
-  final StreamController<List<Message>> _streamController = StreamController<List<Message>>();
-  final List<Message> _messages = [];
+//  final StreamController<List<Message>> _streamController = StreamController<List<Message>>();
+//  final List<Message> _messages = [];
   bool _requesting = false;
-
-  @override
-  void dispose() {
-    _streamController.close();
-    super.dispose();
-  }
 
   @override
   void initState() {
     super.initState();
-    _messages.add(Message(message: "Hi, it is nice to see you here today", byUser: false));
-    _streamController.sink.add(_messages);
     isNewDay();
   }
+  
 
   void isNewDay() async {
     final userId = supabase.auth.currentUser?.id;
@@ -74,7 +70,8 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void sendMessage() async{
     final message = _messageController.text.trim();
-    _messageController.clear();
+    final userId = supabase.auth.currentUser?.id;
+    if(userId == null) {return;}
     if(message.isNotEmpty){
       if(!_isMessageSentToday){
         //update user streaks after sending message per day
@@ -87,17 +84,22 @@ class _ChatRoomState extends State<ChatRoom> {
 
       if(!stopwatch.isRunning){
         await chatSessionDatabase.startChatSession();
+        var temp = await chatSessionDatabase.getChatID();
+        setState(() {
+          session = temp;
+        });
         stopwatch.start();
       }
+      chatDatabase.addMessage(userId, session, message, true);
         setState(() {
-            _messages.add(Message(message: message, byUser: true));
-            _streamController.sink.add(_messages);
             _requesting = true;
       });
+
+      _messageController.clear();
       final botMessage = await chat.createCompletion(message);
+      chatDatabase.addMessage(userId, session, botMessage, false);
         setState(() {
           _requesting = false;
-          _messages.add(Message(message: botMessage, byUser: false));
         });
 
     }
@@ -175,7 +177,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
          body: StreamBuilder(
             //listens to this stream
-            stream: _streamController.stream,
+            stream: chatDatabase.stream,
             //UI builder
             builder:  (context, snapshot) {
               //loading
@@ -188,6 +190,7 @@ class _ChatRoomState extends State<ChatRoom> {
               }
               // loaded!
               final messages = snapshot.data!;
+              final filtered = messages.where((message) => message.chat_id == session).toList();
 
          return Container(
             width: double.infinity,
@@ -201,16 +204,16 @@ class _ChatRoomState extends State<ChatRoom> {
                         child: 
                             ListView.builder(
                                 padding: const EdgeInsets.all(8),
-                                itemCount: messages.length,
+                                itemCount: filtered.length,
                                 itemBuilder: (BuildContext context, int index) {
                               return Align(
-                                alignment: messages[index].byUser ? Alignment.centerRight : Alignment.centerLeft,
+                                alignment: filtered[index].byUser ? Alignment.centerRight : Alignment.centerLeft,
                                 child: Card(
                                 elevation: 8,
-                                  color: messages[index].byUser ? Colors.white : Colors.white30,
+                                  color: filtered[index].byUser ? Colors.white : Colors.white30,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
-                                  child: Text(messages[index].message, style: TextStyle(color: messages[index].byUser ? Colors.black : Colors.white),),
+                                  child: Text(filtered[index].message, style: TextStyle(color: filtered[index].byUser ? Colors.black : Colors.white),),
                                   ),
                               ) 
                               );

@@ -22,6 +22,23 @@ class ChatSessionDatabase {
     };
   }
 
+  Future<String> getChatID() async{
+    final userId = supabase.auth.currentUser?.id;
+    final response = await supabase
+        .from('chat_session')
+        .select('id, started_at, ended_at')
+        .eq('user_id', userId as Object)
+        .order('started_at', ascending:false)
+        .limit(1)
+        .maybeSingle();
+
+    if(response == null){
+      return "";
+    }
+    final sessionId = response['id'];
+    return sessionId.toString();
+  }
+
   //update session when user leaves session
   Future<void> endChatSession() async {
     final userId = supabase.auth.currentUser?.id;

@@ -24,7 +24,7 @@ class Journal{
   }
 
 
-  //session -> map
+  //Journal -> map
   Map<String, dynamic> toMap(){
     return {
       'id': journalID,
