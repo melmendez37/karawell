@@ -213,7 +213,12 @@ class _ChatRoomState extends State<ChatRoom> {
                                   color: filtered[index].byUser ? Colors.white : Colors.white30,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
-                                  child: Text(filtered[index].message, style: TextStyle(color: filtered[index].byUser ? Colors.black : Colors.white),),
+                                  child: Text(filtered[index].message,
+                                    style: TextStyle(
+                                      color: filtered[index].byUser ? Colors.black : Colors.white,
+                                      fontFamily: "DM_Sans",
+                                      fontSize: 16,
+                                    ),),
                                   ),
                               ) 
                               );
@@ -248,6 +253,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                 hintText: 'Type a message...',
                                 hintStyle: TextStyle(
                                   color: Color(0xFFF2F2F2),
+                                  fontFamily: "DM_Sans",
+                                  fontSize: 16,
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
