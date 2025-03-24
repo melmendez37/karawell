@@ -10,7 +10,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:myapp/screens/Messages/message.dart';
 
 class ChatRoom extends StatefulWidget{
-  const ChatRoom({super.key});
+  final String chatId;
+  const ChatRoom({
+    required this.chatId,
+    super.key
+    });
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -21,13 +25,14 @@ class _ChatRoomState extends State<ChatRoom> {
   final chat = ChatApi();
   final stopwatch = Stopwatch();
   final chatSessionDatabase = ChatSessionDatabase();
-  String session = "";
   final chatDatabase = MessageDatabase();
   final streakDatabase = StreaksDatabase();
   final badgesDatabase = BadgesDatabase();
 
   final _messageController = TextEditingController();
   bool _isMessageSentToday = false;
+  String session = "";
+  bool isNewSession = true;
 
 //  final StreamController<List<Message>> _streamController = StreamController<List<Message>>();
 //  final List<Message> _messages = [];
@@ -36,6 +41,12 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      session = widget.chatId;
+      if(session != ""){
+        isNewSession = false;
+      }
+    });
     isNewDay();
   }
   
@@ -236,6 +247,8 @@ class _ChatRoomState extends State<ChatRoom> {
                               )
                           ),
                           ),
+
+                    if(isNewSession)
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,

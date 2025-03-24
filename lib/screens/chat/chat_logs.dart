@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:myapp/screens/Journal/journal.dart';
-import 'package:myapp/screens/Journal/journaling_page.dart';
+import 'package:myapp/screens/Messages/message.dart';
+import 'package:myapp/screens/Messages/messagingHeaders.dart';
+import 'package:myapp/screens/chat/chat_room.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:myapp/screens/Journal/journal_database.dart';
-import 'package:myapp/screens/Journal/journal.dart';
+import 'package:myapp/screens/chat/chat_database.dart';
 
-class JournalingPages extends StatefulWidget {
-  const JournalingPages({super.key});
+class ChatLogs extends StatefulWidget {
+  const ChatLogs({super.key});
 
   @override
-  State<JournalingPages> createState() => _JournalingPagesState();
+  State<ChatLogs> createState() => _ChatLogsState();
 }
 
-class _JournalingPagesState extends State<JournalingPages> {
+class _ChatLogsState extends State<ChatLogs> {
   final supabase = Supabase.instance.client.auth.currentUser?.id;
+  List<MessagingHeaders> headers = [];
+  final chatDatabase = MessageDatabase();
 
-  final journalDatabase = JournalDatabase();
+  @override
+  void initState() {
+    super.initState();
+    getHeaders();
+  }
+
+  Future<void> getHeaders() async {
+    final output = await chatDatabase.makeHeaders();
+    if(output.isNotEmpty){
+      setState(() {
+        headers += output;
+      });
+    }
+
+  }
 
 
   @override
@@ -30,7 +47,7 @@ class _JournalingPagesState extends State<JournalingPages> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Journals',
+              'Chats',
               style: TextStyle(
                 fontFamily: 'DM_Sans',
                 fontSize: 24.0,
@@ -41,7 +58,7 @@ class _JournalingPagesState extends State<JournalingPages> {
                 onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => JournalingPage(date: DateTime.now(),)),
+                    MaterialPageRoute(builder: (context) => ChatRoom(chatId: "",)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -80,8 +97,8 @@ class _JournalingPagesState extends State<JournalingPages> {
         ),
       ),
 
-      body: StreamBuilder<List<Journal>>(
-          stream: journalDatabase.stream,
+      body: StreamBuilder<List<Message>>(
+          stream: chatDatabase.stream,
           builder: (context, snapShot){
             if(!snapShot.hasData){
               return const Center(
@@ -104,7 +121,7 @@ class _JournalingPagesState extends State<JournalingPages> {
                         ),
                         SizedBox(width:10),
                         Text(
-                          "No journals?",
+                          "No Conversations?",
                           style: TextStyle(
                               fontFamily: "DM_Sans",
                               fontSize: 30,
@@ -127,16 +144,35 @@ class _JournalingPagesState extends State<JournalingPages> {
                 ),
               );
             }
-            final headers = journalDatabase.makeHeaders(journals);
-
-            return ListView.builder(
-                itemCount: headers.length,
-                itemBuilder: (context, index){
-                  final header = headers[index];
-                  final date = DateFormat.yMMMMd('en_US').format(header.date);
-                  final count = header.count;
-
-                  return Center(
+            return GroupedListView<MessagingHeaders, DateTime>(
+                order: GroupedListOrder.DESC,
+                useStickyGroupSeparators: true,
+                padding: const EdgeInsets.all(8),
+                floatingHeader: true,
+                elements: headers,
+                groupBy: (header) => DateTime(
+                header.date.day,
+              ),
+              groupHeaderBuilder: (MessagingHeaders header) => SizedBox(
+                height: 45,
+                  child: Center(
+                    child: Card(
+                      color: Color(0xff057569),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          DateFormat("MMMM d").format(header.date),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: "DM_Sans",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
+                        )),  
+                        ),
+                      ),
+                    ),
+                  ),
+                itemBuilder: (context, MessagingHeaders header) => Center(
                   child: ListTile(
                     title: Container(
                       decoration: BoxDecoration(
@@ -145,14 +181,14 @@ class _JournalingPagesState extends State<JournalingPages> {
 
                       ),
                       child: ListTile(
-                        title: Text("$date",
+                        title: Text(DateFormat.jms('en_US').format(header.date),
                         style: const TextStyle(
                             color: Colors.white,
                             fontFamily: "DM_Sans",
                             fontWeight: FontWeight.bold,
                             fontSize: 16
                         )),  // Text for the main title
-                        subtitle: Text("Wrote $count ${count == 1 ? "journal" : "journals"}",
+                        subtitle: Text("The conversation had ${header.count} ${header.count == 1 ? "chat" : "chats"}",
                         style: const TextStyle(
                             color: Colors.white,
                             fontFamily: "DM_Sans",
@@ -163,14 +199,14 @@ class _JournalingPagesState extends State<JournalingPages> {
                         onTap: () => {
                           Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => JournalingPage(date: header.date,)))
+                          MaterialPageRoute(builder: (context) => ChatRoom(chatId: header.id!,)))
                         },
                       ),
                     ),
                   ),
-                );
+                )
               
-           });
+           );
           }
       )
     );

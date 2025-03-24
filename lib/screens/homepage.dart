@@ -11,6 +11,7 @@ import 'package:myapp/screens/profile/profile_database.dart';
 import 'package:myapp/screens/streaks/streaks_database.dart';
 import 'package:myapp/screens/streaks/streaks_page.dart';
 import 'package:myapp/screens/chat/chat_room.dart';
+import 'package:myapp/screens/chat/chat_logs.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -341,7 +342,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ChatRoom()),
+                            MaterialPageRoute(builder: (context) => ChatRoom(chatId: "",)),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -613,6 +614,30 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => JournalingPage(date: DateTime.now(),)),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 10),
+
+                  ListTile(
+                    leading: Icon(
+                      Icons.chat_bubble_rounded,
+                      color: Colors.black,
+                      size: 26.0,
+                    ),
+                    title: const Text(
+                      'Check Chat Logs',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DM_Sans',
+                          fontSize: 16.0
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatLogs()),
                       );
                     },
                   ),

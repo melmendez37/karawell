@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:myapp/screens/Journal/journal.dart';
-import 'package:myapp/screens/Journal/journal_Headers.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:myapp/screens/Messages/messagingHeaders.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class JournalDatabase {
@@ -26,9 +24,10 @@ class JournalDatabase {
       });
         }
   } 
-    List<journal_Headers> makeHeaders(List<Journal> journals){
+    List<MessagingHeaders> makeHeaders(List<Journal> journals){
+
     DateTime temp = journals.first.date;
-    List<journal_Headers> result = [];
+    List<MessagingHeaders> result = [];
     int count = 0;
 
     for(Journal journal in journals){
@@ -37,18 +36,18 @@ class JournalDatabase {
             count++;
           }
           else if(journal.date.day > temp.day){
-            result.add(journal_Headers(date: temp, journalCount: count));
+            result.add(MessagingHeaders(date: temp, count: count, kind: "journal"));
             count = 1;
             temp = journal.date;
           }
         }
         else{
-          result.add(journal_Headers(date: temp, journalCount: count));
+          result.add(MessagingHeaders(date: temp, count: count, kind: "journal"));
           count = 1;
           temp = journal.date;
         }
       }
-      result.add(journal_Headers(date: temp, journalCount: count));
+      result.add(MessagingHeaders(date: temp, count: count, kind: "journal"));
       return result;
     }
 }
