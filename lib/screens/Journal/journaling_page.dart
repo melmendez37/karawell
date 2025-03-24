@@ -25,6 +25,7 @@ class _JournalingPageState extends State<JournalingPage> {
   final supabase = Supabase.instance.client;
   final journalDatabase = JournalDatabase();
   final _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   void sendMessage() async{
     final message = _messageController.text.trim();
@@ -34,6 +35,29 @@ class _JournalingPageState extends State<JournalingPage> {
     if(message.isNotEmpty){
       journalDatabase.addJournal(userId, message, DateTime.now());
       _messageController.clear();
+    }
+
+    setState(() {});
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scrollToBottom();
+      });
+    });
+  }
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  void _scrollToBottom(){
+    if(_scrollController.hasClients){
+      _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     }
   }
 
@@ -105,47 +129,50 @@ class _JournalingPageState extends State<JournalingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                        child: GroupedListView<Journal, DateTime>(
+                        child: ListView.builder(
+                          controller: _scrollController,
                           padding: const EdgeInsets.all(8),
-                          reverse: true,
-                          order: GroupedListOrder.DESC,
-                          useStickyGroupSeparators: true,
-                          floatingHeader: true,
-                          elements: filteredMessages,
-                          groupBy: (message) => DateTime(
-                            message.date.day,
-                            message.date.hour,
-                            message.date.minute,
-                          ),
-                          groupHeaderBuilder: (Journal message) => SizedBox(
-                            height: 40,
-                            child: Center(
+                          reverse: false,
+                          itemCount: filteredMessages.length,
+                          itemBuilder: (context, index) {
+                            final message = filteredMessages[index];
+                            return Align(
+                              alignment: Alignment.centerLeft,
                               child: Card(
-                                color: Theme.of(context).highlightColor,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                color: Color(0xFF025959),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(
-                                    DateFormat("MMMM d,").add_jm() .format(message.date),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          message.message,
+                                          style: TextStyle(
+                                            fontFamily: "DM_Sans",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.white
+                                          ),
+                                        ),
+                                        SizedBox(height: 8,),
+                                        Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Text(
+                                            DateFormat("MMMM d,").add_jm() .format(message.date),
+                                            style: const TextStyle(
+                                                color: Color(0xFFD9D9D9),
+                                                fontFamily: "DM_Sans",
+                                                fontStyle: FontStyle.italic
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                 ),
                               ),
-                            ),
-                          ),
-                          itemBuilder: (context, Journal message) => Align(
-                            alignment: Alignment.centerLeft,
-                            child: Card(
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(message.message,
-                                style: TextStyle(
-                                  fontFamily: "DM_Sans",
-                                  fontSize: 16,
-                                ),),
-                              ),
-                          ),
-                          ),
+                            );
+                          }
                         )
                     ),
 
@@ -155,82 +182,145 @@ class _JournalingPageState extends State<JournalingPage> {
                         color: Colors.transparent,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: TextField(
-                              style: TextStyle(
-                              color: Colors.white,
-                              ),
-                              controller: _messageController,
-                              decoration: InputDecoration(
-                                hintText: "What's on your mind...",
-                                hintStyle: TextStyle(
-                                  color: Color(0xFFF2F2F2),
-                                  fontFamily: "DM_Sans",
-                                  fontSize: 16,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFF2F2F2),
-                                    width: 2,
-                                  ),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFF2F2F2),
-                                    width: 2,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFF2F2F2),
-                                    width: 2,
-                                  ),
-                                ),
-
-                              ),
-                            ),
+                      child: Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              )
                           ),
+                            onPressed: (){
+                              showModalBottomSheet(
+                                backgroundColor: Color(0xff027373),
+                                  context: context,
+                                  builder: (BuildContext context){
+                                    return SizedBox(
+                                      height: 300,
+                                      child: Padding(
+                                          padding: EdgeInsets.all(20),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Add new journal',
+                                                style:TextStyle(
+                                                    fontFamily: "DM_Sans",
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontSize: 22
+                                                ),
+                                              ),
 
-                          SizedBox(
-                            child: ElevatedButton(
-                              onPressed: sendMessage,
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
-                                )
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.add_box_outlined,
+                                              SizedBox(height: 20,),
+                                              
+                                              Expanded(
+                                                child: TextField(
+                                                  style: TextStyle(
+                                                    color: Color(0xfff2f2f2),
+                                                    fontFamily: "DM_Sans"
+                                                  ),
+                                                  controller: _messageController,
+                                                  decoration: InputDecoration(
+                                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                                    alignLabelWithHint: true,
+                                                    hintText: "What's on your mind...",
+                                                    hintStyle: TextStyle(
+                                                      color: Color(0xFFF2F2F2),
+                                                      fontFamily: "DM_Sans",
+                                                      fontSize: 16,
+                                                    ),
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                      borderSide: BorderSide(
+                                                        color: Color(0xFFF2F2F2),
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    disabledBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                      borderSide: BorderSide(
+                                                        color: Color(0xFFF2F2F2),
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                      borderSide: BorderSide(
+                                                        color: Color(0xFFF2F2F2),
+                                                        width: 2,
+                                                      ),
+                                                    ),
+
+                                                  ),
+                                                  minLines: 4,
+                                                  maxLines: 6,
+                                                ),
+                                              ),
+
+                                              SizedBox(
+                                                child: ElevatedButton(
+                                                  onPressed: (){
+                                                    sendMessage();
+                                                    Navigator.pop(context);
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                      )
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.add_box_outlined,
+                                                        color: Color(0xff027373),
+                                                        size: 22,
+                                                      ),
+                                                      SizedBox(width: 5,),
+                                                      Text(
+                                                        'Save journal',
+                                                        style: TextStyle(
+                                                          color: Color(0xff027373),
+                                                          fontFamily: "DM_Sans",
+                                                          fontSize:16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                      )
+                                    );
+                                  }
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_box_outlined,
+                                  color: Color(0xff027373),
+                                  size: 22,
+                                ),
+                                SizedBox(width: 5,),
+                                Text(
+                                  'Create journal',
+                                  style: TextStyle(
                                     color: Color(0xff027373),
-                                    size: 20,
+                                    fontFamily: "DM_Sans",
+                                    fontSize:16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-
-                                  SizedBox(width: 5,),
-
-                                  Text(
-                                    'Save',
-                                    style: TextStyle(
-                                      color: Color(0xff027373),
-                                      fontFamily: "DM_Sans",
-                                      fontSize:16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                                ),
+                              ],
+                            )
+                        ),
+                      )
                     ),
                   ],
                 )
