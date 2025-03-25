@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/homepage.dart';
 
 import 'auth_service.dart';
 
@@ -43,7 +44,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await authService.signUpWithEmailPassword(email, password);
 
         //remove register page
-        Navigator.pop(context);
+        if(mounted){
+          setState(() {});
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Homepage()),
+          );
+        }
       }
 
       //catch any error
