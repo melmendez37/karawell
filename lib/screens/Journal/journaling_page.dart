@@ -193,108 +193,118 @@ class _JournalingPageState extends State<JournalingPage> {
                             onPressed: (){
                               showModalBottomSheet(
                                 backgroundColor: Color(0xff027373),
+                                isScrollControlled: true,
                                   context: context,
                                   builder: (BuildContext context){
-                                    return SizedBox(
-                                      height: 300,
-                                      child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Add new journal',
-                                                style:TextStyle(
-                                                    fontFamily: "DM_Sans",
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: 22
-                                                ),
-                                              ),
-
-                                              SizedBox(height: 20,),
-                                              
-                                              Expanded(
-                                                child: TextField(
-                                                  style: TextStyle(
-                                                    color: Color(0xfff2f2f2),
-                                                    fontFamily: "DM_Sans"
-                                                  ),
-                                                  controller: _messageController,
-                                                  decoration: InputDecoration(
-                                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                    alignLabelWithHint: true,
-                                                    hintText: "What's on your mind...",
-                                                    hintStyle: TextStyle(
-                                                      color: Color(0xFFF2F2F2),
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 20,
+                                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                                      ),
+                                        child: SizedBox(
+                                            height: 300,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Add new journal',
+                                                  style:TextStyle(
                                                       fontFamily: "DM_Sans",
-                                                      fontSize: 16,
-                                                    ),
-                                                    enabledBorder: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(8),
-                                                      borderSide: BorderSide(
-                                                        color: Color(0xFFF2F2F2),
-                                                        width: 2,
-                                                      ),
-                                                    ),
-                                                    disabledBorder: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(8),
-                                                      borderSide: BorderSide(
-                                                        color: Color(0xFFF2F2F2),
-                                                        width: 2,
-                                                      ),
-                                                    ),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(8),
-                                                      borderSide: BorderSide(
-                                                        color: Color(0xFFF2F2F2),
-                                                        width: 2,
-                                                      ),
-                                                    ),
-
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: 22
                                                   ),
-                                                  minLines: 4,
-                                                  maxLines: 6,
                                                 ),
-                                              ),
 
-                                              SizedBox(
-                                                child: ElevatedButton(
-                                                  onPressed: (){
-                                                    sendMessage();
-                                                    Navigator.pop(context);
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(8),
-                                                      )
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.add_box_outlined,
-                                                        color: Color(0xff027373),
-                                                        size: 22,
+                                                SizedBox(height: 20,),
+
+                                                Expanded(
+                                                  child: TextField(
+                                                    style: TextStyle(
+                                                        color: Color(0xfff2f2f2),
+                                                        fontFamily: "DM_Sans"
+                                                    ),
+                                                    controller: _messageController,
+                                                    decoration: InputDecoration(
+                                                      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                                      alignLabelWithHint: true,
+                                                      hintText: "What's on your mind...",
+                                                      hintStyle: TextStyle(
+                                                        color: Color(0xFFF2F2F2),
+                                                        fontFamily: "DM_Sans",
+                                                        fontSize: 16,
                                                       ),
-                                                      SizedBox(width: 5,),
-                                                      Text(
-                                                        'Save journal',
-                                                        style: TextStyle(
-                                                          color: Color(0xff027373),
-                                                          fontFamily: "DM_Sans",
-                                                          fontSize:16,
-                                                          fontWeight: FontWeight.bold,
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        borderSide: BorderSide(
+                                                          color: Color(0xFFF2F2F2),
+                                                          width: 2,
                                                         ),
                                                       ),
-                                                    ],
+                                                      disabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        borderSide: BorderSide(
+                                                          color: Color(0xFFF2F2F2),
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                      focusedBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        borderSide: BorderSide(
+                                                          color: Color(0xFFF2F2F2),
+                                                          width: 2,
+                                                        ),
+                                                      ),
+
+                                                    ),
+                                                    minLines: 4,
+                                                    maxLines: 6,
                                                   ),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                      )
+
+                                                Padding(
+                                                    padding: EdgeInsets.only(bottom: 40),
+                                                    child:  SizedBox(
+                                                      child: ElevatedButton(
+                                                        onPressed: (){
+                                                          sendMessage();
+                                                          Navigator.pop(context);
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(8),
+                                                            )
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.add_box_outlined,
+                                                              color: Color(0xff027373),
+                                                              size: 22,
+                                                            ),
+                                                            SizedBox(width: 5,),
+                                                            Text(
+                                                              'Save journal',
+                                                              style: TextStyle(
+                                                                color: Color(0xff027373),
+                                                                fontFamily: "DM_Sans",
+                                                                fontSize:16,
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                )
+                                              ],
+                                            ),
+                                        ),
                                     );
                                   }
                               );
