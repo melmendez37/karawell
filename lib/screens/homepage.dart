@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/auth/auth_service.dart';
+import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/badges/badges_page.dart';
 import 'package:myapp/screens/Journal/Journaling_pages.dart';
@@ -45,6 +46,14 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   //when logout button is pressed
   void logout() async {
     await authService.signOut();
+
+    if(mounted){
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+      );
+    }
   }
 
   @override
