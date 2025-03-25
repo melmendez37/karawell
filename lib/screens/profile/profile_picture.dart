@@ -72,7 +72,11 @@ class _ProfilePictureState extends State<ProfilePicture>{
             SizedBox(height: 10,),
 
             //image preview
-            _imageFile != null ? Image.file(_imageFile!) :
+            SizedBox(
+              width: 300,
+              height: 300,
+              child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,)
+            :
             const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -117,6 +121,7 @@ class _ProfilePictureState extends State<ProfilePicture>{
                   ),
                 ],
               ),
+            ),
             ),
 
            SizedBox(height: 35),
