@@ -54,35 +54,6 @@ class _ChatLogsState extends State<ChatLogs> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatRoom(chatId: "",)),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff057569),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.add_box_outlined,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 5,),
-                    Text(
-                      'Add',
-                      style: TextStyle(
-                          fontFamily: "DM_Sans",
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.white
-                      ),
-                    )
-                  ],
-                )
-            )
           ],
         ),
         centerTitle: true,
@@ -133,7 +104,7 @@ class _ChatLogsState extends State<ChatLogs> {
                     SizedBox(height: 10,),
 
                     Text(
-                      "Tap the Add button to begin!",
+                      "Go to the homepage and start a conversation",
                       style: TextStyle(
                           fontFamily: "DM_Sans",
                           fontSize: 18,
