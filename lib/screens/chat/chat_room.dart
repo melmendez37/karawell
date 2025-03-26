@@ -20,10 +20,11 @@ class ChatRoom extends StatefulWidget{
   State<ChatRoom> createState() => _ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
+class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
   final supabase = Supabase.instance.client;
   final chat = ChatApi();
   final stopwatch = Stopwatch();
+  Timer? inactivityTimer;
   final chatSessionDatabase = ChatSessionDatabase();
   final chatDatabase = MessageDatabase();
   final streakDatabase = StreaksDatabase();
@@ -41,6 +42,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     setState(() {
       session = widget.chatId;
       if(session != ""){
@@ -48,6 +50,17 @@ class _ChatRoomState extends State<ChatRoom> {
       }
     });
     isNewDay();
+    resetInactivityTimer();
+  }
+
+  void resetInactivityTimer() {
+    inactivityTimer?.cancel();
+    inactivityTimer = Timer(Duration(minutes: 5), (){
+      if(stopwatch.isRunning){
+        endChatSession();
+        stopwatch.reset();
+      }
+    });
   }
   
 
@@ -80,6 +93,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void sendMessage() async{
+    resetInactivityTimer();
     final message = _messageController.text.trim();
     final userId = supabase.auth.currentUser?.id;
     if(userId == null) {return;}
@@ -88,7 +102,6 @@ class _ChatRoomState extends State<ChatRoom> {
         //update user streaks after sending message per day
         _updateUserStreaks();
         setState(() {
-         
           _isMessageSentToday = true;
         });
       }
@@ -118,6 +131,9 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void endChatSession() async {
     await chatSessionDatabase.endChatSession();
+    if(mounted){
+      Navigator.pop(context);
+    }
   }
 
   void _updateUserStreaks() async {
