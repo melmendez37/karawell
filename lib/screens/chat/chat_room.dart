@@ -151,166 +151,174 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        toolbarHeight: 90,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          'Chat Room',
-          style: TextStyle(
-            fontFamily: 'DM_Sans',
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFF2F2F2)
-          ),
-        ),
-        centerTitle: true,
-        leading: BackButton(
-          onPressed: () async {
-            endChatSession();
-            if(context.mounted){
-              Navigator.pop(context);
-            }
-          },
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-            top: Radius.circular(20),
-          ),
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (didPop){
+          if(didPop) return;
+          endChatSession();
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              toolbarHeight: 90,
+              backgroundColor: Colors.transparent,
+              title: Text(
+                'Chat Room',
+                style: TextStyle(
+                    fontFamily: 'DM_Sans',
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFF2F2F2)
+                ),
+              ),
+              centerTitle: true,
+              leading: BackButton(
+                onPressed: () async {
+                  endChatSession();
+                  if(context.mounted){
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              iconTheme: IconThemeData(
+                color: Colors.white,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(20),
+                  top: Radius.circular(20),
+                ),
 
-        ),
-      ),
-
-         body: StreamBuilder(
-            //listens to this stream
-            stream: chatDatabase.stream,
-            //UI builder
-            builder:  (context, snapshot) {
-              //loading
-              if(!snapshot.hasData){
-                return const Center(
-                    child: CircularProgressIndicator(
-                    color: Colors.white,
-                    )
-                  );
-              }
-              // loaded!
-              final messages = snapshot.data!;
-              final filtered = messages.where((message) => message.chat_id == session).toList();
-
-         return Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Color(0xff027373),
-            child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: 
-                            ListView.builder(
-                                padding: const EdgeInsets.all(8),
-                                itemCount: filtered.length,
-                                itemBuilder: (BuildContext context, int index) {
-                              return Align(
-                                alignment: filtered[index].byUser ? Alignment.centerRight : Alignment.centerLeft,
-                                child: Card(
-                                elevation: 8,
-                                  color: filtered[index].byUser ? Colors.white : Colors.white30,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(filtered[index].message,
-                                    style: TextStyle(
-                                      color: filtered[index].byUser ? Colors.black : Colors.white,
-                                      fontFamily: "DM_Sans",
-                                      fontSize: 16,
-                                    ),),
-                                  ),
-                              ) 
-                              );
-                            }
-                            )
-
-                    ),
-                        if(_requesting)
-                        const Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                              padding: EdgeInsets.all(30),
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                          ),
-                          ),
-
-                    if(isNewSession)
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              style: TextStyle(
-                              color: Colors.white,
-                              ),
-                              controller: _messageController,
-                              decoration: InputDecoration(
-                                hintText: 'Type a message...',
-                                hintStyle: TextStyle(
-                                  color: Color(0xFFF2F2F2),
-                                  fontFamily: "DM_Sans",
-                                  fontSize: 16,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFF2F2F2),
-                                    width: 2,
-                                  ),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFF2F2F2),
-                                    width: 2,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFF2F2F2),
-                                    width: 2,
-                                  ),
-                                ),
-
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: sendMessage,
-                            icon: Icon(
-                                Icons.send,
-                                color: Color(0xFFF2F2F2)
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                )
+              ),
             ),
-        );
-      }
-    )
-  );
+
+            body: StreamBuilder(
+              //listens to this stream
+                stream: chatDatabase.stream,
+                //UI builder
+                builder:  (context, snapshot) {
+                  //loading
+                  if(!snapshot.hasData){
+                    return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                    );
+                  }
+                  // loaded!
+                  final messages = snapshot.data!;
+                  final filtered = messages.where((message) => message.chat_id == session).toList();
+
+                  return Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Color(0xff027373),
+                    child: SafeArea(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                child:
+                                ListView.builder(
+                                    padding: const EdgeInsets.all(8),
+                                    itemCount: filtered.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Align(
+                                          alignment: filtered[index].byUser ? Alignment.centerRight : Alignment.centerLeft,
+                                          child: Card(
+                                            elevation: 8,
+                                            color: filtered[index].byUser ? Colors.white : Colors.white30,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Text(filtered[index].message,
+                                                style: TextStyle(
+                                                  color: filtered[index].byUser ? Colors.black : Colors.white,
+                                                  fontFamily: "DM_Sans",
+                                                  fontSize: 16,
+                                                ),),
+                                            ),
+                                          )
+                                      );
+                                    }
+                                )
+
+                            ),
+                            if(_requesting)
+                              const Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                    padding: EdgeInsets.all(30),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                ),
+                              ),
+
+                            if(isNewSession)
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        controller: _messageController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Type a message...',
+                                          hintStyle: TextStyle(
+                                            color: Color(0xFFF2F2F2),
+                                            fontFamily: "DM_Sans",
+                                            fontSize: 16,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: Color(0xFFF2F2F2),
+                                              width: 2,
+                                            ),
+                                          ),
+                                          disabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: Color(0xFFF2F2F2),
+                                              width: 2,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: Color(0xFFF2F2F2),
+                                              width: 2,
+                                            ),
+                                          ),
+
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: sendMessage,
+                                      icon: Icon(
+                                          Icons.send,
+                                          color: Color(0xFFF2F2F2)
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                          ],
+                        )
+                    ),
+                  );
+                }
+            )
+        )
+    );
 }                        
   }
 
