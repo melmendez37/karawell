@@ -131,9 +131,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
 
   void endChatSession() async {
     await chatSessionDatabase.endChatSession();
-    if(mounted){
-      Navigator.pop(context);
-    }
+    if(!mounted) return;
+    Navigator.pop(context);
   }
 
   void _updateUserStreaks() async {
@@ -172,7 +171,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
         onPopInvoked: (didPop){
           if(didPop) return;
           endChatSession();
-          Navigator.pop(context);
         },
         child: Scaffold(
             extendBodyBehindAppBar: true,
