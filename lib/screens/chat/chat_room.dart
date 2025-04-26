@@ -171,10 +171,11 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        canPop: false,
-        onPopInvoked: (didPop){
-          if(didPop) return;
-          endChatSession();
+        canPop: true,
+        onPopInvoked: (didPop) async {
+          if(!didPop){
+            endChatSession();
+          }
         },
         child: Scaffold(
             extendBodyBehindAppBar: true,
@@ -192,11 +193,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
               ),
               centerTitle: true,
               leading: BackButton(
-                onPressed: () async {
-                  endChatSession();
-                  if(context.mounted){
-                    Navigator.pop(context);
-                  }
+                onPressed: () {
+                  Navigator.pop(context);
                 },
               ),
               iconTheme: IconThemeData(
