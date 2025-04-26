@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/Messages/Chats_format.dart';
 import 'package:myapp/screens/badges/badges_database.dart';
 import 'package:myapp/screens/chat/chat_api.dart';
 import 'package:myapp/screens/chat/chat_database.dart';
@@ -34,6 +35,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
   bool _isMessageSentToday = false;
   String session = "";
   bool isNewSession = true;
+  List<ChatsFormat> messages = [];
 
 //  final StreamController<List<Message>> _streamController = StreamController<List<Message>>();
 //  final List<Message> _messages = [];
@@ -117,13 +119,15 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver{
       chatDatabase.addMessage(userId, session, message, true);
         setState(() {
             _requesting = true;
+            messages.add(ChatsFormat(message: message, byUser: true));
       });
 
       _messageController.clear();
-      final botMessage = await chat.createCompletion(message);
+      final botMessage = await chat.createCompletion(messages);
       chatDatabase.addMessage(userId, session, botMessage, false);
         setState(() {
           _requesting = false;
+          messages.add(ChatsFormat(message: botMessage, byUser: false));
         });
 
     }

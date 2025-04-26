@@ -23,7 +23,6 @@ class Message{
     );
   }
 
-
   //Message -> map
   Map<String, dynamic> toMap(){
     return {
