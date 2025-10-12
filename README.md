@@ -1,16 +1,13 @@
-# myapp
+# KaraWell
 
-A new Flutter project.
+An Android app designed as a mental health application with gamification features. Developed using Flutter and Supabase.
 
-## Getting Started
+## Purpose
+Developed for a thesis project that determines how gamification features can directly decrease anxiety levels and increase user engagement among students.
+26 participants used the application remotely for 2 weeks.
 
-This project is a starting point for a Flutter application.
+## Core Functions
+- Integrated open-source ChatPsychiatrist LLM for user-bot mental health interactions
+- Includes gamification features (streaks, badges) to increase user engagement
+- Allows user authentication for customization and security.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
