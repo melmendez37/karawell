@@ -1,10 +1,12 @@
 # KaraWell
 
-An Android app designed as a mental health application with gamification features. Developed using Flutter and Supabase.
+An Android app designed as a mental health application with gamification features. 
+Developed using Flutter and Supabase.
+Installation Link: https://drive.google.com/drive/folders/1_FwjtaKanw5NbiCX9jKvOMQBfwskxOi1?usp=sharing
 
 ## Purpose
 Developed for a thesis project that determines how gamification features can directly decrease anxiety levels and increase user engagement among students.
-26 participants used the application remotely for 2 weeks.
+26 participants used the application remotely for 2 weeks during March-April 2025.
 
 ## Core Functions
 - Integrated open-source ChatPsychiatrist LLM for user-bot mental health interactions
